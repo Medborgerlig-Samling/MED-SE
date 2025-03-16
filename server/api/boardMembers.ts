@@ -1,26 +1,11 @@
-import type { ParsedMember } from '~/types/api/member';
-import { parseMemberData } from '../parsers/member';
+import { transformMemberData } from './transformers/memberTransformer';
+import { createStrapiClient } from './utils/strapiClient';
 
 export default defineEventHandler(async () => {
-  const runtimeConfig = useRuntimeConfig();
-  const baseURL = runtimeConfig.public.baseURL;
-  const apiUrl = baseURL + '/api/boardmembers?populate[member][populate]=*';
+  const { client, baseUrl } = createStrapiClient();
 
-  const headers = new Headers({
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + process.env.STRAPI_TOKEN,
-    Accept: 'application/json',
-  });
+  const collection = await client.collection('boardmembers');
+  const boardMembers = await collection.find({ populate: '*' });
 
-  const fetchOptions = {
-    method: 'GET',
-    headers,
-  };
-
-  const response = await fetch(apiUrl, fetchOptions);
-  const json = await response.json();
-
-  const parsed = json.data.map(parseMemberData);
-
-  return parsed as ParsedMember;
+  return boardMembers.data.map((e) => transformMemberData(e, baseUrl));
 });

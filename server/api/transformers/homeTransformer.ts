@@ -23,7 +23,7 @@ export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: 
         title: hero.CTA.label,
         to: hero.CTA.value,
       },
-      image: hero.image?.[0] ? `${baseUrl}${hero.image[0].url}` : null,
+      image: hero.image?.[0] ? hero.image[0].url : null,
     },
   };
 }

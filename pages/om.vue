@@ -142,14 +142,11 @@ async function loadBoardMembers() {
 
   partyLeader.value = boardMemberData.find(({ title }) => title === 'partiledare');
   viceLeader.value = boardMemberData.find(({ title }) => title === 'Vice Ordförande');
-
-  console.log({boardMemberData})
 }
 
 async function loadSpokesPersons() {
   const res = await fetch('/api/spokesPersons');
   const spokesPersonsData = await res.json();
-  console.log({spokesPersonsData})
   spokesPersons.value = spokesPersonsData;
 }
 

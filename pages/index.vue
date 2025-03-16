@@ -19,7 +19,11 @@ onMounted(async () => {
     hero.value = json.hero
 
   } catch (error) {
-    console.error('Error fetching image:', error);
+    if (error instanceof Error) {
+      console.error(error.message, error);
+    } else {
+      console.error(error);
+    }
   }
 });
 </script>

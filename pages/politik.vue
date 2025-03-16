@@ -109,7 +109,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-// const spokesPersons = ref([]);
 const tab = ref(null);
 const mainSubjects = ref([]);
 const otherSubjects = ref([]);
@@ -129,8 +128,6 @@ async function loadMainsubjects() {
 async function loadOtherSubjects() {
   const res = await fetch('/api/otherSubjects');
   otherSubjects.value = await res.json();
-
-  console.log({ other: otherSubjects.value });
 }
 
 function selectSubject(subject) {

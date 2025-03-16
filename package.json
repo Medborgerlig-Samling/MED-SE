@@ -20,6 +20,7 @@
     "@nuxtjs/strapi": "^2.0.0",
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.10.1",
+    "@strapi/client": "^1.0.1",
     "@stripe/stripe-js": "^5.10.0",
     "nuxt": "^3.16.0",
     "pinia": "^3.0.1",

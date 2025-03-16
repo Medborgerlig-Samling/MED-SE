@@ -8,7 +8,7 @@
           </template>
         </AppBarDesktop>
 
-        <NavigationDrawerDesktop :value="expand" :items="items" />
+        <!-- <NavigationDrawerDesktop :value="expand" :items="items" /> -->
       </template>
 
       <template v-else>
@@ -18,7 +18,7 @@
           </template>
         </AppBarMobile>
 
-        <NavigationDrawerMobile :value="expand" :items="items" />
+        <!-- <NavigationDrawerMobile :value="expand" :items="items" /> -->
       </template>
 
       <v-main>

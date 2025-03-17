@@ -5,7 +5,14 @@ export default defineEventHandler(async () => {
   const { client, baseUrl } = createStrapiClient();
 
   const collection = await client.collection('spokespersons');
-  const spokespersons = await collection.find({ populate: '*' });
+  const spokespersons = await collection.find({
+    populate: {
+      member: {
+        populate: '*',
+      },
+    },
+  });
 
+  console.dir(spokespersons, { depth: null });
   return spokespersons.data.map((e) => transformMemberData(e, baseUrl));
 });

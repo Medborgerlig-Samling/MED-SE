@@ -2,6 +2,27 @@ import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import '@mdi/font/css/materialdesignicons.css';
 
+const themeColors = {
+  accent: {
+    100: '#FF6347',
+    200: '#DC442E',
+    300: '#8D0000',
+  },
+  secondary: {
+    100: '#87CEEB',
+    200: '#1A6F89',
+  },
+  text: {
+    100: '#FFFFFF',
+    200: '#E0E0E0',
+  },
+  bg: {
+    100: '#003366',
+    200: '#1F4378',
+    300: '#3F5C94',
+  },
+};
+
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     theme: {
@@ -10,23 +31,16 @@ export default defineNuxtPlugin((nuxtApp) => {
         customTheme: {
           dark: false,
           colors: {
-            primary: '#002F6C', // Example primary color
-            // accent: "#4CA1AF", // Example accent color
-            // text: "#B0A8B9", // Example text color
-            // background: "#F4F1DE", // Example background color
+            primary: themeColors.bg[100],
+            secondary: themeColors.secondary[200],
+            accent: themeColors.accent[200],
+            background: themeColors.bg[100],
+            text: themeColors.bg[200],
             // error: "#FF0000", // Example error color
             // info: "#2196F3", // Example info color
             // success: "#4CAF50", // Example success color
             // warning: "#FFC107", // Example warning color
-            // secondary: "#3F3351", // Example secondary color
             // tertiary: "#FF0000", // Example tertiary color
-            // quaternary: "#FF0000", // Example quaternary color
-            // quinary: "#FF0000", // Example quinary color
-            // senary: "#FF0000", // Example senary color
-            // septenary: "#FF0000", // Example septenary color
-            // octonary: "#FF0000", // Example octonary color
-            // nonary: "#FF0000", // Example nonary color
-            // denary: "#FF0000", // Example denary color
           },
         },
       },
@@ -34,6 +48,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
     defaults: {
       VApp: {
+        color: 'primary',
         class: 'font-body',
       },
       VBtn: {

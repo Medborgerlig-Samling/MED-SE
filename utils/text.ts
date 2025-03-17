@@ -1,6 +1,6 @@
 import type { TextInlineProps, Modifier, ComponentsContextValue } from '~/types/renderer/Blocks';
 
-import { name } from '../package.json';
+import { name } from '~/package.json';
 
 interface TextType extends TextInlineProps {
   componentsContext: ComponentsContextValue;

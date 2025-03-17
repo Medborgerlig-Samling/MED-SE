@@ -3,12 +3,12 @@ import type { MemberRequest, ParsedMember } from '~/types/api/member';
 export function transformMemberData(data: { [member: string]: MemberRequest }, baseURL: string): ParsedMember | null {
   if (!data) return null;
   const { member } = data;
-
+  console.dir(member);
   return {
     firstName: member.first_name,
     familyName: member.family_name,
-    profilePic: `${baseURL}${member.profile_picture?.url}`,
-    heroPic: `${baseURL}${member.hero?.url}`,
+    profilePic: member.profile_picture?.url,
+    heroPic: member.hero_image?.[0].url,
     slug: member.slug,
     title: member.title,
     district: member.district,

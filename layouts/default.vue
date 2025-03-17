@@ -1,10 +1,10 @@
 <template>
-  <v-responsive class="border rounded">
-    <v-app>
+  <v-responsive>
+    <v-app >
       <template v-if="!xs">
-        <AppBarDesktop logo="/logo-retina.png" :cta="{ title: '🚀 Bli medlem', to: '/medlem' }" :items="items">
+        <AppBarDesktop logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/medlem' }" :items="items">
           <template #append>
-            <v-btn icon="mdi-menu" color="primary" class="mr-4" @click.stop="expand = !expand" />
+            <v-btn icon="mdi-menu" color="accent" class="mr-4" @click.stop="expand = !expand" />
           </template>
         </AppBarDesktop>
 
@@ -19,7 +19,7 @@
         </AppBarMobile>
 
         <!-- <NavigationDrawerMobile :value="expand" :items="items" /> -->
-      </template>
+    </template> -->
 
       <v-main>
         <slot />
@@ -68,12 +68,6 @@ const icons = ['mdi-facebook', 'mdi-twitter', 'mdi-linkedin', 'mdi-instagram'];
 </script>
 
 <style scoped>
-a {
-  width: fit-content;
-}
-.logo {
-  width: 100px;
-}
 
 :deep(.v-list-item) {
   width: 100%;

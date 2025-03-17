@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app flat>
+  <v-app-bar app color="primary" flat>
     <NuxtLink to="/">
       <v-img :src="logo" height="60" width="125" alt="Site Logo" class="logo mx-6" />
     </NuxtLink>

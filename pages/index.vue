@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bg-primary mx-6">
   <HeroDesktop v-if="(hero && hero.title && hero.CTA && hero.image)" v-bind="hero"/>
     <v-container>
       <v-spacer />
@@ -27,3 +27,4 @@ onMounted(async () => {
   }
 });
 </script>
+

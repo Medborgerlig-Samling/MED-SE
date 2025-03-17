@@ -1,6 +1,6 @@
 <template>
   <div class="mx-6">
-    <v-tabs v-model="tab" color="primary" center-active>
+    <v-tabs v-model="tab" color="accent" center-active>
       <v-tab :value="1">Partiledare</v-tab>
       <v-tab :value="2">Vice ordförande</v-tab>
       <v-tab :value="3">Talespersoner</v-tab>
@@ -8,29 +8,30 @@
 
     <v-tabs-window v-model="tab">
       <v-tabs-window-item :value="1">
+
         <div class="py-6">
           <v-card flat>
-            <v-img :src="partyLeader?.imgSrc" class="align-end" width="400px" rounded />
+          <HeroMemberDesktop 
+            :image="partyLeader?.heroPic" 
+            :title="partyLeader?.title"
+            :slogan="partyLeader?.slogan"
+            :first-name="partyLeader?.firstName"
+            :family-name="partyLeader?.familyName"
+            :portrait="partyLeader?.profilePic"
+            :email="partyLeader?.email"
+            :twitter="partyLeader?.twitter"
+            />
 
-            <v-card-item>
-              <v-card-title>{{ `${partyLeader?.firstName} ${partyLeader?.familyName}` }}</v-card-title>
-              <v-card-subtitle>{{ partyLeader?.title }}</v-card-subtitle>
-            </v-card-item>
+<v-card-item>
 
-            <v-card-text>{{ partyLeader?.slogan }}</v-card-text>
-            <v-card-text>{{ partyLeader?.goals }}</v-card-text>
-            <v-card-actions>
-              <v-btn
-                v-if="partyLeader?.twitter"
-                icon="mdi-twitter"
-                color="primary"
-                :href="`https://www.x.com/${partyLeader?.twitter}`"
-                target="_blank"
-              />
-              <v-btn icon="mdi-email" color="primary" :href="`mailto:${partyLeader?.email}`" />
-            </v-card-actions>
+
+            <BlocksRenderer v-if="partyLeader?.about" :content="partyLeader?.about" /> 
+            <BlocksRenderer  v-if="partyLeader?.goals"  :content="partyLeader?.goals" /> 
+          </v-card-item>
+
           </v-card>
         </div>
+
       </v-tabs-window-item>
       <v-tabs-window-item :value="2">
         <div class="py-6">
@@ -66,7 +67,7 @@
               <template v-for="member in spokesPersons" :key="member.familyName">
                 <v-card width="300" color="primary" rounded="lg" flat @click="selectMember(member)">
                   <v-img
-                    :src="member.imgSrc"
+                    :src="member.profilePic"
                     class="align-end"
                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                     height="200px"
@@ -82,39 +83,37 @@
               </template>
             </div>
           </div>
-          <div v-else class="py-6">
+          <div v-else >
             <v-card flat>
               <v-btn
-                color="primary"
-                variant="tonal"
+                color="accent"
+     
                 icon="mdi-close"
                 class="back-button"
                 size="small"
                 @click="showDetails = false"
               />
 
-              <v-img :src="selectedMember?.imgSrc" class="align-end" width="400px" rounded />
+    
 
+              <HeroMemberDesktop 
+            :image="selectedMember?.heroPic" 
+            :title="selectedMember?.title"
+            :slogan="selectedMember?.slogan"
+            :first-name="selectedMember?.firstName"
+            :family-name="selectedMember?.familyName"
+            :portrait="selectedMember?.profilePic"
+            />
+
+
+  
               <v-card-item>
-                <v-card-title>{{ `${selectedMember?.firstName} ${selectedMember?.familyName}` }}</v-card-title>
-                <v-card-subtitle>{{ selectedMember?.title }}</v-card-subtitle>
-              </v-card-item>
 
-              <v-card-text>{{ selectedMember?.slogan }}</v-card-text>
-              <v-card-text>{{ selectedMember?.goals }}</v-card-text>
-
-              <v-card-actions>
-                <v-btn
-                  v-if="selectedMember.twitter"
-                  icon="mdi-twitter"
-                  color="primary"
-                  :href="`https://www.x.com/${selectedMember?.twitter}`"
-                  target="_blank"
-                />
-                <v-btn icon="mdi-email" color="primary" :href="`mailto:${selectedMember?.email}`" />
-              </v-card-actions>
+              <BlocksRenderer :content="selectedMember?.about " /> 
+              <BlocksRenderer :content="selectedMember?.goals " /> 
+                </v-card-item>
             </v-card>
-          </div>
+     </div>
         </v-slide-y-transition>
       </v-tabs-window-item>
     </v-tabs-window>
@@ -123,6 +122,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { BlocksRenderer } from '~/utils/blocksRenderer'
+import type { BlocksContent } from '~/types/renderer/Blocks'
+import type MemberDesktop from '~/components/Hero/MemberDesktop.vue';
 
 const spokesPersons = ref([]);
 const tab = ref(null);
@@ -130,6 +132,10 @@ const partyLeader = ref(null);
 const viceLeader = ref(null);
 const selectedMember = ref(null);
 const showDetails = ref(false);
+
+const content = ref<BlocksContent>()
+
+
 
 onMounted(async () => {
   await loadBoardMembers();
@@ -169,7 +175,7 @@ function selectMember(member) {
 .back-button {
   position: absolute;
   z-index: 100;
-  top: 0.3rem;
-  left: 0.3rem;
+  top: 1rem;
+  right: 1rem;
 }
 </style>

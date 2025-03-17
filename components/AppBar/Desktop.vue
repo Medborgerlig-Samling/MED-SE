@@ -1,22 +1,22 @@
 <template>
-  <v-app-bar app flat>
+  <v-app-bar app color="primary" flat>
     <NuxtLink to="/">
-      <v-img :src="logo" height="60" width="125" alt="Site Logo" class="logo mx-6" />
+      <v-img :src="logo" height="60" width="135" alt="Site Logo" class="logo mx-6" />
     </NuxtLink>
-    <div class="d-flex justify-space-start w-100 ga-3">
+    <div class="d-flex justify-space-start w-100 ga-3 ">
       <template v-for="{ title, to, menu } in items" :key="title">
-        <v-btn v-if="!menu || !menu?.length" color="primary" :to="to">
+        <v-btn v-if="!menu || !menu?.length"  :to="to">
           {{ title }}
         </v-btn>
 
         <v-menu v-else>
           <template #activator="{ props }">
-            <v-btn color="primary" v-bind="props" append-icon="mdi-chevron-down">
+            <v-btn color="white" v-bind="props" append-icon="mdi-chevron-down">
               {{ title }}
             </v-btn>
           </template>
 
-          <v-list class="rounded-lg elevation-6 bg-primary">
+          <v-list class="rounded-lg elevation-6 bg-secondary">
             <v-list-item v-for="menuItem in menu" :key="menuItem.title" :value="menuItem.to" :to="menuItem.to">
               <v-list-item-title class="w-full">{{ menuItem.title }}</v-list-item-title>
             </v-list-item>
@@ -24,7 +24,7 @@
         </v-menu>
       </template>
     </div>
-    <v-btn v-if="cta" variant="flat" rounded="lg" color="primary" :to="cta.to" class="mr-6">
+    <v-btn v-if="cta" variant="flat" rounded="lg" color="accent" :to="cta.to" class="mr-6">
       {{ cta.title }}
     </v-btn>
 
@@ -48,7 +48,7 @@ a {
   width: fit-content;
 }
 .logo {
-  width: 100px;
+  width: 300px;
 }
 
 :deep(.v-list-item) {
@@ -62,4 +62,5 @@ a {
 :deep(.v-footer) {
   max-height: 12rem;
 }
+
 </style>

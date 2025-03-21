@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/eslint',
     '@nuxtjs/strapi',
+    '@nuxtjs/device',
     // 'nuxt-stripe-module',
     // '@dargmuesli/nuxt-cookie-control',
   ],

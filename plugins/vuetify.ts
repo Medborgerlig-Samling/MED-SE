@@ -32,15 +32,12 @@ export default defineNuxtPlugin((nuxtApp) => {
           dark: false,
           colors: {
             primary: themeColors.bg[100],
-            secondary: themeColors.secondary[200],
-            accent: themeColors.accent[200],
+            secondary: '#3E7DBB',
+            accent: '#cd4858',
             background: themeColors.bg[100],
             text: themeColors.bg[200],
-            // error: "#FF0000", // Example error color
-            // info: "#2196F3", // Example info color
-            // success: "#4CAF50", // Example success color
-            // warning: "#FFC107", // Example warning color
-            // tertiary: "#FF0000", // Example tertiary color
+            error: '770737',
+            tertiary: '#E1E1DD',
           },
         },
       },

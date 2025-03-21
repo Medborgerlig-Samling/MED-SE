@@ -1,13 +1,22 @@
 <template>
-  <v-snackbar v-model="showBanner" location="bottom" :timeout="-1" color="secondary" elevation="24">
+  <v-snackbar
+    v-model="showBanner"
+    location="bottom"
+    :timeout="-1"
+    color="secondary"
+    elevation="24"
+  >
     <v-row align="center">
       <v-col cols="12" md="8">
-        Vi använder cookies för funktionalitet och bättre upplevelse. Genom att klicka ”Godkänn” samtycker du. Ändra
-        inställningar när som helst via ikonen i sidfoten.
+        Vi använder cookies för funktionalitet och bättre upplevelse. Genom att klicka ”Godkänn” samtycker du. Ändra inställningar när som helst via ikonen i sidfoten.
       </v-col>
       <v-col cols="12" md="4" class="text-right">
-        <v-btn color="secondary" flat @click="openSettings"> inställningar </v-btn>
-        <v-btn color="primary" flat @click="acceptAll"> Godkänn alla </v-btn>
+        <v-btn color="secondary" flat  @click="openSettings">
+          inställningar
+        </v-btn>
+        <v-btn color="primary" flat  @click="acceptAll">
+          Godkänn alla
+        </v-btn>
       </v-col>
     </v-row>
 
@@ -26,7 +35,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="white" @click="savePreferences"> Spara </v-btn>
+          <v-btn color="white"  @click="savePreferences">
+            Spara
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -34,54 +45,60 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useStorage } from '@vueuse/core';
+import { ref } from 'vue'
+import { useStorage } from '@vueuse/core'
 
 const cookiePreferences = ref({
   analytics: false,
-  // Add more
-});
+  // Add more 
+})
 
-const cookieConsent = useStorage('cookie-consent', null);
-const showBanner = ref(!cookieConsent.value);
-const showSettings = ref(false);
+const cookieConsent = useStorage('cookie-consent', null)
+const showBanner = ref(!cookieConsent.value)
+const showSettings = ref(false)
 
 // Methods
 const acceptAll = () => {
-  cookiePreferences.value.analytics = true;
-  savePreferences();
-};
+  cookiePreferences.value.analytics = true
+  savePreferences()
+}
 
 const openSettings = () => {
-  showSettings.value = true;
-};
+  showSettings.value = true
+}
 
 const savePreferences = () => {
   cookieConsent.value = {
     accepted: true,
     preferences: { ...cookiePreferences.value },
-    timestamp: new Date().toISOString(),
-  };
-  showBanner.value = false;
-  showSettings.value = false;
-  initializeCookies();
-};
+    timestamp: new Date().toISOString()
+  }
+  showBanner.value = false
+  showSettings.value = false
+  initializeCookies()
+}
 
 // Cookie initialization
 const initializeCookies = () => {
   if (cookieConsent.value?.preferences.analytics) {
-    initializeGoogleAnalytics();
+    initializeGoogleAnalytics()
   }
-};
+}
 
 const initializeGoogleAnalytics = () => {
-  console.log('Google Analytics would be initialized here');
-};
+  console.log('Google Analytics would be initialized here')
+}
 
 // Check existing consent on mount
 onMounted(() => {
   if (cookieConsent.value?.accepted) {
-    initializeCookies();
+    initializeCookies()
   }
-});
+})
+
+
+//steg 1: hämta info med bankid (namn, adress) ?
+//steg 2: 
+
 </script>
+

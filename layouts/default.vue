@@ -2,7 +2,7 @@
   <v-responsive>
     <v-app >
       <template v-if="!xs">
-        <AppBarDesktop logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/medlem' }" :items="items">
+        <AppBarDesktop logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/bli-medlem' }" :items="items">
           <template #append>
             <v-btn icon="mdi-menu" color="accent" class="mr-4" @click.stop="expand = !expand" />
           </template>
@@ -12,17 +12,18 @@
       </template>
 
       <template v-else>
-        <AppBarMobile :logo="img" :cta="{ title: '🚀 Bli medlem', to: '/medlem' }" :items="items">
+        <AppBarMobile logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/medlem' }" :items="items">
           <template #append>
-            <v-btn icon="mdi-menu" color="primary" class="mr-4" @click.stop="expand = !expand" />
+            <v-btn icon="mdi-menu" color="white" class="mr-4" @click.stop="expand = !expand" />
           </template>
         </AppBarMobile>
 
         <!-- <NavigationDrawerMobile :value="expand" :items="items" /> -->
-    </template> -->
+    </template> 
 
       <v-main>
         <slot />
+        <CookieBannerDesktop />
       </v-main>
 
       <v-footer class="text-center d-flex flex-column ga-2 py-4" color="primary" height="12">

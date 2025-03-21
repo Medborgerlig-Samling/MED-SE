@@ -3,7 +3,7 @@
     <NuxtLink to="/">
       <v-img :src="logo" height="60" width="125" alt="Site Logo" class="logo mx-6" />
     </NuxtLink>
-    <v-btn v-if="cta" variant="flat" rounded="lg" color="primary" :to="cta.to" class="mr-6">
+    <v-btn v-if="cta" variant="flat" rounded="lg" color="accent" :to="cta.to" class="mr-6">
       {{ cta.title }}
     </v-btn>
 

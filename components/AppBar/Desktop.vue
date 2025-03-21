@@ -3,9 +3,9 @@
     <NuxtLink to="/">
       <v-img :src="logo" height="60" width="135" alt="Site Logo" class="logo mx-6" />
     </NuxtLink>
-    <div class="d-flex justify-space-start w-100 ga-3 ">
+    <div class="d-flex justify-space-start w-100 ga-3">
       <template v-for="{ title, to, menu } in items" :key="title">
-        <v-btn v-if="!menu || !menu?.length"  :to="to">
+        <v-btn v-if="!menu || !menu?.length" :to="to">
           {{ title }}
         </v-btn>
 
@@ -62,5 +62,4 @@ a {
 :deep(.v-footer) {
   max-height: 12rem;
 }
-
 </style>

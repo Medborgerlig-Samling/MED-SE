@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6">
+  <div>
     <v-tabs v-model="tab" color="accent" center-active>
       <v-tab :value="1">Partiledare</v-tab>
       <v-tab :value="2">Vice ordförande</v-tab>
@@ -8,30 +8,25 @@
 
     <v-tabs-window v-model="tab">
       <v-tabs-window-item :value="1">
-
         <div class="py-6">
           <v-card flat>
-          <HeroMemberDesktop 
-            :image="partyLeader?.heroPic" 
-            :title="partyLeader?.title"
-            :slogan="partyLeader?.slogan"
-            :first-name="partyLeader?.firstName"
-            :family-name="partyLeader?.familyName"
-            :portrait="partyLeader?.profilePic"
-            :email="partyLeader?.email"
-            :twitter="partyLeader?.twitter"
+            <HeroMemberDesktop
+              :image="partyLeader?.heroPic"
+              :title="partyLeader?.title"
+              :slogan="partyLeader?.slogan"
+              :first-name="partyLeader?.firstName"
+              :family-name="partyLeader?.familyName"
+              :portrait="partyLeader?.profilePic"
+              :email="partyLeader?.email"
+              :twitter="partyLeader?.twitter"
             />
 
-<v-card-item>
-
-
-            <BlocksRenderer v-if="partyLeader?.about" :content="partyLeader?.about" /> 
-            <BlocksRenderer  v-if="partyLeader?.goals"  :content="partyLeader?.goals" /> 
-          </v-card-item>
-
+            <v-card-item>
+              <BlocksRenderer v-if="partyLeader?.about" :content="partyLeader?.about" />
+              <BlocksRenderer v-if="partyLeader?.goals" :content="partyLeader?.goals" />
+            </v-card-item>
           </v-card>
         </div>
-
       </v-tabs-window-item>
       <v-tabs-window-item :value="2">
         <div class="py-6">
@@ -83,37 +78,25 @@
               </template>
             </div>
           </div>
-          <div v-else >
+          <div v-else>
             <v-card flat>
-              <v-btn
-                color="accent"
-     
-                icon="mdi-close"
-                class="back-button"
-                size="small"
-                @click="showDetails = false"
+              <v-btn color="accent" icon="mdi-close" class="back-button" size="small" @click="showDetails = false" />
+
+              <HeroMemberDesktop
+                :image="selectedMember?.heroPic"
+                :title="selectedMember?.title"
+                :slogan="selectedMember?.slogan"
+                :first-name="selectedMember?.firstName"
+                :family-name="selectedMember?.familyName"
+                :portrait="selectedMember?.profilePic"
               />
 
-    
-
-              <HeroMemberDesktop 
-            :image="selectedMember?.heroPic" 
-            :title="selectedMember?.title"
-            :slogan="selectedMember?.slogan"
-            :first-name="selectedMember?.firstName"
-            :family-name="selectedMember?.familyName"
-            :portrait="selectedMember?.profilePic"
-            />
-
-
-  
               <v-card-item>
-
-              <BlocksRenderer :content="selectedMember?.about " /> 
-              <BlocksRenderer :content="selectedMember?.goals " /> 
-                </v-card-item>
+                <BlocksRenderer :content="selectedMember?.about" />
+                <BlocksRenderer :content="selectedMember?.goals" />
+              </v-card-item>
             </v-card>
-     </div>
+          </div>
         </v-slide-y-transition>
       </v-tabs-window-item>
     </v-tabs-window>
@@ -122,8 +105,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { BlocksRenderer } from '~/utils/blocksRenderer'
-import type { BlocksContent } from '~/types/renderer/Blocks'
+import { BlocksRenderer } from '~/utils/blocksRenderer';
+import type { BlocksContent } from '~/types/renderer/Blocks';
 import type MemberDesktop from '~/components/Hero/MemberDesktop.vue';
 
 const spokesPersons = ref([]);
@@ -133,9 +116,7 @@ const viceLeader = ref(null);
 const selectedMember = ref(null);
 const showDetails = ref(false);
 
-const content = ref<BlocksContent>()
-
-
+const content = ref<BlocksContent>();
 
 onMounted(async () => {
   await loadBoardMembers();

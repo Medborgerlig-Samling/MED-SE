@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary mx-6">
+  <div class="bg-primary">
     <HeroDesktop v-if="hero && hero.title && hero.CTA && hero.image" v-bind="hero" />
     <v-container>
       <v-spacer />

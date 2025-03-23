@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="white" variant="tonal" rounded="0" class="pa-2" >
+  <v-card flat color="white" variant="tonal" rounded="0" class="pa-2">
     <v-form v-model="valid" validate-on="invalid-input">
       <v-container>
         <v-row>
@@ -120,7 +120,7 @@
 import type { StripePaymentBody } from '@/types/stripe';
 import { countries, municipalities } from '@/types/stripe';
 
-defineProps<{isLoading: boolean; errorMessage?: string}>()
+defineProps<{ isLoading: boolean; errorMessage?: string }>();
 
 const emit = defineEmits<{
   (e: 'submit', payload: StripePaymentBody): void;

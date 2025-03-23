@@ -1,10 +1,9 @@
 <template>
-  <v-card flat color="white" variant="tonal" rounded="0" class="pa-2 justify-center" width="100vw" max-width="100%" >
+  <v-card flat color="white" variant="tonal" rounded="0" class="pa-2 justify-center" width="100vw" max-width="100%">
     <v-form v-model="valid" validate-on="invalid-input">
       <v-container>
-
         <v-row>
-          <v-col cols="12" sm="12" md="6" >
+          <v-col cols="12" sm="12" md="6">
             <v-text-field
               v-model="firstName"
               label="Förnamn"
@@ -21,7 +20,7 @@
         </v-row>
 
         <v-row>
-        <v-col>
+          <v-col>
             <v-text-field
               v-model="personalNumber"
               label="Personnummer (för ungdomsrabatt)"
@@ -29,18 +28,16 @@
               variant="solo"
               flat
             />
-          </v-col>        
+          </v-col>
         </v-row>
 
         <v-row>
           <v-col cols="12" sm="12" md="6">
             <v-text-field v-model="phoneNumber" label="Telefonnummer" required variant="solo" flat />
           </v-col>
-            <v-col cols="12" sm="12" md="6">
+          <v-col cols="12" sm="12" md="6">
             <v-text-field v-model="email" label="Mailadress" required type="email" variant="solo" flat />
           </v-col>
-
-   
         </v-row>
 
         <v-row>
@@ -72,9 +69,8 @@
           </v-col>
         </v-row>
 
-
         <v-row>
-          <v-col cols="12" sm="6" md="6" >
+          <v-col cols="12" sm="6" md="6">
             <v-text-field
               v-model="cardNumber"
               label="Kortnummer"
@@ -85,19 +81,19 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="3" md="3">  
-          <v-text-field
-            v-model="expirationDate"
-            label="Utgångsdatum"
-            variant="solo"
-            flat
-            :rules="expirationRules"
-            required
-            placeholder="MM/YY"
-            maxlength="5"
-            @input="formatExpirationDate"
-          />
-        </v-col>
+          <v-col cols="12" sm="3" md="3">
+            <v-text-field
+              v-model="expirationDate"
+              label="Utgångsdatum"
+              variant="solo"
+              flat
+              :rules="expirationRules"
+              required
+              placeholder="MM/YY"
+              maxlength="5"
+              @input="formatExpirationDate"
+            />
+          </v-col>
 
           <!-- <v-col cols="6" sm="4">
             <v-text-field
@@ -143,7 +139,7 @@
 import type { StripePaymentBody } from '@/types/stripe';
 import { countries, municipalities } from '@/types/stripe';
 
-defineProps<{isLoading: boolean; errorMessage?: string}>()
+defineProps<{ isLoading: boolean; errorMessage?: string }>();
 
 const emit = defineEmits<{
   (e: 'submit', payload: StripePaymentBody): void;
@@ -181,10 +177,7 @@ const valid = ref(true);
 const expirationDate = ref('');
 
 // Existing rules
-const expirationRules = [
-  (v) => !!v || 'Utgångsdatum krävs',
-  (v) => /^\d{2}\/\d{2}$/.test(v) || 'Format: MM/YY',
-];
+const expirationRules = [(v) => !!v || 'Utgångsdatum krävs', (v) => /^\d{2}\/\d{2}$/.test(v) || 'Format: MM/YY'];
 
 // Format the expiration date as MM/YY
 function formatExpirationDate() {

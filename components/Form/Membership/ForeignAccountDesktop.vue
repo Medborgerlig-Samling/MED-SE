@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="white" variant="tonal" rounded="0" class="pa-4" >
+  <v-card flat color="white" variant="tonal" rounded="0" class="pa-4">
     <v-form v-model="valid" validate-on="invalid-input">
       <v-container>
         <v-row>
@@ -74,18 +74,14 @@
             :rules="[(v) => !!v || 'Du måste acceptera integritetspolicyn']"
           />
 
-
           <p>Jag betalade via <span class="text-accent">*</span></p>
           <v-radio-group v-model="betalningsMetod">
             <v-radio label="Bankgiro" value="bankgiro"></v-radio>
             <v-radio label="Utlandskonto" value="utland"></v-radio>
-
           </v-radio-group>
         </v-sheet>
 
-        <v-btn type="submit" color="accent" block @click="onSubmit">
-            Skicka in!
-        </v-btn>
+        <v-btn type="submit" color="accent" block @click="onSubmit"> Skicka in! </v-btn>
 
         <div v-if="errorMessage" class="error-message">
           {{ errorMessage }}
@@ -117,10 +113,9 @@ const body = ref<StripePaymentBody>({
   },
 });
 
+const betalningsAlternativ = ['bankgiro', 'utland'] as const;
 
-const betalningsAlternativ = ['bankgiro', 'utland'] as const
-
-const betalningsMetod = <typeof betalningsAlternativ[number]>ref(betalningsAlternativ[0])
+const betalningsMetod = <(typeof betalningsAlternativ)[number]>ref(betalningsAlternativ[0]);
 
 const firstName = ref('');
 const lastName = ref('');

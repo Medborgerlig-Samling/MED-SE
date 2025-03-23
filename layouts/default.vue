@@ -1,6 +1,6 @@
 <template>
   <v-responsive>
-    <v-app >
+    <v-app>
       <template v-if="!xs">
         <AppBarDesktop logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/bli-medlem' }" :items="items">
           <template #append>
@@ -19,7 +19,7 @@
         </AppBarMobile>
 
         <!-- <NavigationDrawerMobile :value="expand" :items="items" /> -->
-    </template> 
+      </template>
 
       <v-main>
         <slot />
@@ -46,7 +46,7 @@ import { useDisplay } from 'vuetify';
 
 const expand = ref(false);
 
-
+console.log('hej');
 const items = [
   {
     title: 'Politik',
@@ -69,7 +69,6 @@ const icons = ['mdi-facebook', 'mdi-twitter', 'mdi-linkedin', 'mdi-instagram'];
 </script>
 
 <style scoped>
-
 :deep(.v-list-item) {
   width: 100%;
 }

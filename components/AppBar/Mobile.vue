@@ -1,12 +1,11 @@
 <template>
   <v-app-bar app color="primary" flat>
-    <NuxtLink to="/">
-      <v-img :src="logo" height="60" width="125" alt="Site Logo" class="logo mx-6" />
+    <NuxtLink to="/" class="mr-4">
+      <v-img :src="logo" height="80" width="125" alt="Site Logo" class="logo" />
     </NuxtLink>
-    <v-btn v-if="cta" variant="flat" rounded="lg" color="accent" :to="cta.to" class="mr-6">
+    <v-btn v-if="cta" variant="flat" rounded="lg" color="accent" :to="cta.to">
       {{ cta.title }}
     </v-btn>
-
     <template #append>
       <slot name="append" />
     </template>
@@ -28,7 +27,7 @@ a {
   width: fit-content;
 }
 .logo {
-  width: 100px;
+  width: 20px;
 }
 
 :deep(.v-list-item) {

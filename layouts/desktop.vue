@@ -7,7 +7,7 @@
         </template>
       </AppBarDesktop>
 
-      <v-main>
+      <v-main class="desktop-class">
         <NavigationDrawerDesktop :value="expand" :items="items" />
         <slot />
         <CookieBannerDesktop />
@@ -29,7 +29,7 @@ const items = [
   {
     title: 'Partiet',
     menu: [
-      { title: 'Om MED', to: '/om' },
+      { title: 'Om MED', to: '/partiet' },
       { title: 'Distrikt och lokalföreningar', to: '/foreningar' },
       { title: 'Ung och fri', to: '/ungochfri' },
       { title: 'Kontakt & Press', to: '/kontakt' },
@@ -37,3 +37,9 @@ const items = [
   },
 ];
 </script>
+
+<style scoped>
+:deep(.v-main) {
+  min-height: 100vh;
+}
+</style>

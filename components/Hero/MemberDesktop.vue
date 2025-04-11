@@ -1,14 +1,17 @@
 <template>
-  <v-parallax :src="image || 'hero_placeholder.jpg'" rounded>
+  <v-parallax 
+    :src="image || '/hero_placeholder.jpg'" 
+    rounded 
+    max-height="800"
+    gradient="to top right, rgba(0, 0, 0, 0.5) 100%"
+  >
+
     <div class="wrapper">
       <v-sheet color="transparent" class="d-flex text-white flex-column text-primary pa-6">
-        <h4 class="text-h5 font-weight-thin mb-4 bg-accent title pa-2">{{ title }}</h4>
-        <h1 class="text-h1 name mb-4">{{ firstName }}</h1>
-        <h1 class="text-h1 name mb-4">{{ familyName }}</h1>
+        <h4 class="text-h5 font-weight-bold mb-4 bg-accent title pa-2">{{ title }}</h4>
+        <h1 class="text-h1 font-weight-black name mb-4">{{ firstName }}</h1>
+        <h1 class="text-h1 font-weight-black name mb-4">{{ familyName }}</h1>
         <h2 class="subheading font-italic">{{ slogan }}</h2>
-        <!-- <v-avatar :size="300" class="elevation-12 mx-auto mb-8">
-            <v-img :src="portrait"/>
-          </v-avatar> -->
         <div class="d-flex gap-2 mt-16">
           <v-btn
             v-if="twitter"
@@ -35,7 +38,7 @@ defineProps<
 
 <style scoped>
 .name {
-  font-weight: bold !important;
+  font-weight: black !important;
 }
 
 .title {

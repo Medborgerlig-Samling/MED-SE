@@ -137,15 +137,6 @@ function selectSubject(subject) {
 </script>
 
 <style scoped>
-.crown {
-  font-size: 4rem;
-  margin-right: 1rem;
-  position: absolute;
-  top: 0rem;
-  left: 10.5rem;
-  z-index: 4000000;
-}
-
 .back-button {
   position: absolute;
   z-index: 100;

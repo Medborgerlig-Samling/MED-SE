@@ -1,15 +1,13 @@
 export interface StripePaymentBody {
   firstName: string;
   lastName: string;
+  phoneNumber: string;
+  acceptPrivacy: string;
   personalNumber: string;
   country: (typeof countries)[number]['code'];
   municipality?: (typeof municipalities)[number];
-  isRecurring: boolean;
-  paymentMethod: {
-    number?: number;
-    exp_month?: number;
-    cvc?: number;
-  };
+  subscribe: boolean;
+  email: string;
 }
 
 export const countries = [

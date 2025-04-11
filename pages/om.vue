@@ -9,7 +9,7 @@
     <v-tabs-window v-model="tab">
       <v-tabs-window-item :value="1">
         <div class="py-6">
-          <v-card flat>
+          <v-card flat color="">
             <HeroMemberDesktop
               :image="partyLeader?.heroPic"
               :title="partyLeader?.title"

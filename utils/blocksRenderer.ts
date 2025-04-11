@@ -11,23 +11,23 @@ import type {
 
 export const defaultComponents: ComponentsContextValue = {
   blocks: {
-    paragraph: (props) => h('p', {}, props.children),
+    paragraph: (props) => h('p', { class: 'text-body-1' }, props.children),
     quote: (props) => h('blockquote', {}, props.children),
     code: (props) => h('pre', {}, [h('code', {}, props.plainText)]),
     heading: ({ level, children }) => {
       switch (level) {
         case 1:
-          return h('h1', {}, children);
+          return h('h1', { class: 'text-h1' }, children);
         case 2:
-          return h('h2', {}, children);
+          return h('h2', { class: 'text-h2' }, children);
         case 3:
-          return h('h3', {}, children);
+          return h('h3', { class: 'text-h3' }, children);
         case 4:
-          return h('h4', {}, children);
+          return h('h4', { class: 'text-h4' }, children);
         case 5:
-          return h('h5', {}, children);
+          return h('h5', { class: 'text-h5' }, children);
         case 6:
-          return h('h6', {}, children);
+          return h('h6', { class: 'text-h6' }, children);
       }
     },
     link: (props) => h('a', { href: props.url }, props.children),
@@ -44,7 +44,7 @@ export const defaultComponents: ComponentsContextValue = {
       }),
   },
   modifiers: {
-    bold: (props) => h('strong', {}, props.children),
+    bold: (props) => h('strong', { class: 'font-weight-bold' }, props.children),
     italic: (props) => h('em', {}, props.children),
     underline: (props) => h('u', {}, props.children),
     strikethrough: (props) => h('del', {}, props.children),

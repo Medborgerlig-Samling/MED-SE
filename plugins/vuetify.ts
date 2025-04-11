@@ -23,6 +23,15 @@ const themeColors = {
   },
 };
 
+const colors = {
+  primary: '#002F6C',
+  blueDark: '#00193C',
+  blueLight: '#B0D2ED',
+  pink: '#C23959',
+  yellow: '#FFE600',
+  gray: '#CFE2F3',
+};
+
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     theme: {
@@ -31,13 +40,16 @@ export default defineNuxtPlugin((nuxtApp) => {
         customTheme: {
           dark: false,
           colors: {
-            primary: themeColors.bg[100],
-            secondary: '#3E7DBB',
+            primary: colors.primary,
+            secondary: colors.blueLight,
+            // secondary: '#3E7DBB',
             accent: '#cd4858',
-            background: themeColors.bg[100],
+            background: colors.blueDark,
+            // background: themeColors.bg[100],
             text: themeColors.bg[200],
             error: '770737',
             tertiary: '#E1E1DD',
+            green: '#a8dcb8ff',
           },
         },
       },

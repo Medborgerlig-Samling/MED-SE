@@ -1,6 +1,6 @@
 <template>
   <div class="bg-primary">
-    <HeroDesktop v-if="hero && hero.title && hero.CTA && hero.image" v-bind="hero" />
+    <component :is="heroComponent" v-if="hero && hero.title && hero.CTA && hero.image" v-bind="hero" />
     <v-container>
       <v-spacer />
     </v-container>
@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import type { Hero } from '~/types/layout/Hero';
+
 const hero = ref<Hero | null>(null);
 
 onMounted(async () => {
@@ -17,11 +18,11 @@ onMounted(async () => {
     const json = await res.json();
     hero.value = json.hero;
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message, error);
-    } else {
-      console.error(error);
-    }
+    console.error(error instanceof Error ? error.message : error);
   }
 });
+
+const breakpoint = useBreakpoint();
+
+const heroComponent = defineAsyncComponent(() => import(`~/components/Hero/Default${breakpoint.value}.vue`));
 </script>

@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import type { MenuItem, CTA } from '~/types/layout/AppBar';
+
 defineProps<{
   logo: string;
   items: MenuItem[];

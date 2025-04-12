@@ -11,23 +11,23 @@ import type {
 
 export const defaultComponents: ComponentsContextValue = {
   blocks: {
-    paragraph: (props) => h('p', { class: 'text-body-1' }, props.children),
+    paragraph: (props) => h('p', { class: 'text-body-1 mb-6' }, props.children),
     quote: (props) => h('blockquote', {}, props.children),
     code: (props) => h('pre', {}, [h('code', {}, props.plainText)]),
     heading: ({ level, children }) => {
       switch (level) {
         case 1:
-          return h('h1', { class: 'text-h1' }, children);
+          return h('h1', { class: 'text-h1 mb-4' }, children);
         case 2:
-          return h('h2', { class: 'text-h2' }, children);
+          return h('h2', { class: 'text-h2 mb-2' }, children);
         case 3:
-          return h('h3', { class: 'text-h3' }, children);
+          return h('h3', { class: 'text-h3 mb-1' }, children);
         case 4:
-          return h('h4', { class: 'text-h4' }, children);
+          return h('h4', { class: 'text-h4 mb-1' }, children);
         case 5:
-          return h('h5', { class: 'text-h5' }, children);
+          return h('h5', { class: 'text-h5 mb-1' }, children);
         case 6:
-          return h('h6', { class: 'text-h6' }, children);
+          return h('h6', { class: 'text-h6 mb-1' }, children);
       }
     },
     link: (props) => h('a', { href: props.url }, props.children),
@@ -44,7 +44,7 @@ export const defaultComponents: ComponentsContextValue = {
       }),
   },
   modifiers: {
-    bold: (props) => h('strong', { class: 'font-weight-bold' }, props.children),
+    bold: (props) => h('strong', { class: 'font-weight-bold ma-1' }, props.children),
     italic: (props) => h('em', {}, props.children),
     underline: (props) => h('u', {}, props.children),
     strikethrough: (props) => h('del', {}, props.children),
@@ -55,13 +55,11 @@ export const defaultComponents: ComponentsContextValue = {
 };
 
 export const BlocksRenderer = (props: BlocksRendererProps) => {
-  // Merge default blocks with the ones provided by the user
   const blocks: BlocksComponents = {
     ...defaultComponents.blocks,
     ...props.blocks,
   };
 
-  // Merge default modifiers with the ones provided by the user
   const modifiers: ModifiersComponents = {
     ...defaultComponents.modifiers,
     ...props.modifiers,

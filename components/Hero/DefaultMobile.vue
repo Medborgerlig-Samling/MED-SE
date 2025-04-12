@@ -1,7 +1,7 @@
 <template>
   <v-parallax
     :src="image || 'hero_placeholder.jpg'"
-
+    gradient="to top right, rgba(0, 0, 0, 0.5) 100%"
 
   >
     <div class="d-flex flex-column fill-height pa-6  justify-center align-center text-white">

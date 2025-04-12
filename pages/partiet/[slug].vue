@@ -7,6 +7,8 @@
       :first-name="item.firstName"
       :family-name="item.familyName"
       :portrait="item.profilePic"
+      :twitter="item.twitter"
+      :email="item.email"
     />
     <div class="my-10 mx-auto pa-8 rounded bg-primary" :class="display.lgAndUp ? 'w-50' : 'w-100'">
       <BlocksRenderer :content="item.about" />
@@ -50,7 +52,7 @@
 import { BlocksRenderer } from '~/utils/blocksRenderer';
 import { useDisplay } from 'vuetify';
 
-const props = defineProps<{ member: 'spokesperson' | 'boardmember' }>();
+defineProps<{ member: 'spokesperson' | 'boardmember' }>();
 
 const display = ref(useDisplay());
 

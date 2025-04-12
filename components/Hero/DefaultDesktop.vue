@@ -1,5 +1,11 @@
 <template>
-  <v-parallax :src="image || 'hero_placeholder.jpg'" rounded>
+  <v-parallax 
+    id="parallax" 
+    :src="image || 'hero_placeholder.jpg'"
+    gradient="to top right, rgba(0, 0, 0, 1) 100%"
+    rounded
+    max-height="800"
+  >
     <div class="d-flex flex-column fill-height pa-6 justify-center align-center text-white">
       <h1 class="text-h2 font-weight-black text-center text-break mb-4">{{ title }}</h1>
       <h4 class="text-h5 text-center font-weight-bold mb-4">{{ subtitle }}</h4>
@@ -12,3 +18,11 @@
 import type { Hero } from '~/types/layout/Hero';
 defineProps<Hero>();
 </script>
+
+<style scoped>
+:deep(.v-responsive__sizer) {
+  background: #000000;
+  background: linear-gradient(45deg, black, transparent);
+}
+
+</style>

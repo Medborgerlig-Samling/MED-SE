@@ -1,18 +1,15 @@
 <template>
-  <v-card  width="400" class="mx-4 d-flex flex-column">
+  <v-card class="mx-4 d-flex flex-column">
     <v-img 
       v-if="image" 
       :src="image" 
       cover 
-      max-height="200"
+      height="200"
       />
-    <div>
-    
+      <v-card-title class="text-title w-100">{{ title }}</v-card-title>
+      <v-card-text class="text-body-2 mt-auto ">{{ caption }}</v-card-text>
 
-    <v-card-title> {{ title }}  </v-card-title>
-    <v-card-text> {{  caption}}  </v-card-text>
-  </div>
-    <v-card-actions class="mt-auto">
+    <v-card-actions>
       <div>
         <TagItem v-for="tag in tags" :key="tag.value" :category="tag"/>
       </div>

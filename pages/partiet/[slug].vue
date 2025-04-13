@@ -2,7 +2,7 @@
   <div v-if="item">
     <HeroMemberDesktop
       :image="item.heroPic"
-      :title="item.role"
+      :role="item.role"
       :slogan="item.slogan"
       :first-name="item.firstName"
       :family-name="item.familyName"
@@ -64,6 +64,7 @@ onMounted(async () => {
   const slug = route.params.slug;
   const res = await fetch(`/api/members/findBySlug?slug=${encodeURIComponent(slug)}`);
   item.value = await res.json();
-  console.log(item.value);
+
+  console.log(item.value)
 });
 </script>

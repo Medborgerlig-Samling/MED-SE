@@ -48,10 +48,12 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    xBearerToken: process.env.X_BEARER_TOKEN,
     private: {
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
     },
     public: {
+      xBearerToken: process.env.X_AUTH_TOKEN,
       // stripe: {
       //   key: process.env.STRIPE_PUBLISHABLE_KEY,
       // },

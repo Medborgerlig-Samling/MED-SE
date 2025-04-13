@@ -2,9 +2,7 @@
   <div>
     <v-tabs v-model="tab" color="accent" center-active>
       <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`"> Partiledare </v-tab>
-
       <v-tab :value="2" :to="`/partiet/${viceLeader?.slug || 'mikael_flink'}`"> Vice ordförande </v-tab>
-
       <v-tab :value="3" :to="`/partiet/talespersoner`"> Talespersoner </v-tab>
     </v-tabs>
 
@@ -16,26 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-
-definePageMeta({
-  pageTransition: {
-    name: 'slide',
-    mode: 'out-in',
-    onBeforeEnter: (el) => {
-      // TODO
-    },
-    onEnter: (el, done) => {
-      // TODO
-      done();
-    },
-    onLeave: (el, done) => {
-      // TODO
-      done();
-    },
-  },
-});
 
 const route = useRoute();
 const router = useRouter();
@@ -46,10 +25,11 @@ const viceLeader = ref(null);
 const spokesPersons = ref([]);
 
 async function loadBoardMembers() {
-  const res = await fetch('/api/boardMembers');
-  const boardMemberData = await res.json();
-  partyLeader.value = boardMemberData.find(({ role }) => role === 'ordförande');
-  viceLeader.value = boardMemberData.find(({ role }) => role === 'vice ordförande');
+  const leader =  await fetch('/api/members/findByRole?role=ordförande&collection=boardmembers')
+  partyLeader.value = await leader.json()
+
+  const vice = await fetch('/api/members/findByRole?role=vice ordförande&collection=boardmembers')
+  viceLeader.value = await vice.json()
 }
 
 async function loadSpokesPersons() {

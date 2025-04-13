@@ -24,8 +24,6 @@ export default defineEventHandler(async (event) => {
     ];
   }
 
-  console.log({ lineItems, price, paymentMode });
-
   const session = await stripe.checkout.sessions.create({
     ui_mode: 'embedded',
     billing_address_collection: 'required',

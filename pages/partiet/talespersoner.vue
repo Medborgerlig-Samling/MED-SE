@@ -4,7 +4,8 @@
       <div v-if="!selectedSpokespersonSlug" key="list">
         <div class="d-flex flex-wrap ga-6 pa-6">
           <template v-for="spokesperson in item" :key="spokesperson.slug">
-            <v-card width="300" color="primary" rounded="lg" flat @click="navigateToSpokesperson(spokesperson.slug)">
+            <v-card 
+              width="300" color="primary" rounded="lg" flat @click="navigateToSpokesperson(spokesperson.slug)">
               <v-img
                 :src="spokesperson.profilePic"
                 class="align-end"
@@ -13,6 +14,7 @@
                 cover
                 rounded
               >
+              <v-card-text>  {{ spokesperson.role }}</v-card-text>
                 <v-card-title class="text-white">{{
                   `${spokesperson?.firstName} ${spokesperson?.familyName}`
                 }}</v-card-title>

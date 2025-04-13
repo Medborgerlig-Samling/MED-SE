@@ -7,12 +7,10 @@ export default defineEventHandler(async () => {
   const collection = await client.collection('boardmembers');
   const boardMembers = await collection.find({
     populate: {
-      populate: '*',
       member: {
         populate: '*',
       },
     },
   });
-
   return boardMembers.data.map((e) => transformMemberData(e, baseUrl));
 });

@@ -10,7 +10,6 @@ export function transformMemberData(data: { [member: string]: MemberRequest }, b
     profilePic: member.profile_picture?.url,
     heroPic: member.hero_image?.[0].url,
     slug: member.slug,
-    role,
     title: member.title,
     district: member.district,
     slogan: member.slogan,
@@ -19,5 +18,7 @@ export function transformMemberData(data: { [member: string]: MemberRequest }, b
     email: member.email,
     ...(member.facebook && { facebook: member.facebook }),
     ...(member.twitter && { twitter: member.twitter }),
+    ...(member.boardmember && { role: member.boardmember.role }),
+    ...(member.spokesperson && { role: member.spokesperson.role }),
   };
 }

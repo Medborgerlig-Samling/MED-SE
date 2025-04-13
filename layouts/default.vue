@@ -7,8 +7,6 @@
             <v-btn icon="mdi-menu" color="accent" class="mr-4" @click.stop="expand = !expand" />
           </template>
         </AppBarDesktop>
-
-        <!-- <NavigationDrawerDesktop :value="expand" :items="items" /> -->
       </template>
 
       <template v-else>
@@ -17,8 +15,6 @@
             <v-btn icon="mdi-menu" color="white" class="mr-4" @click.stop="expand = !expand" />
           </template>
         </AppBarMobile>
-
-        <!-- <NavigationDrawerMobile :value="expand" :items="items" /> -->
       </template>
 
       <v-main>
@@ -46,7 +42,6 @@ import { useDisplay } from 'vuetify';
 
 const expand = ref(false);
 
-console.log('hej');
 const items = [
   {
     title: 'Politik',
@@ -55,7 +50,7 @@ const items = [
   {
     title: 'Partiet',
     menu: [
-      { title: 'Om MED', to: '/om' },
+      { title: 'Om MED', to: '/partiet' },
       { title: 'Distrikt och lokalföreningar', to: '/foreningar' },
       { title: 'Ung och fri', to: '/ungochfri' },
       { title: 'Kontakt & Press', to: '/kontakt' },

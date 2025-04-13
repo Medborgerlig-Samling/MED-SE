@@ -1,7 +1,12 @@
 <template>
   <v-responsive>
     <v-app>
-      <AppBarDesktop class="px-4"  logo="/logo-vit.png" :cta="{ title: '🚀 Bli medlem', to: '/bli-medlem' }" :items="items">
+      <AppBarDesktop
+        class="px-4"
+        logo="/logo-vit.png"
+        :cta="{ title: '🚀 Bli medlem', to: '/bli-medlem' }"
+        :items="items"
+      >
         <template #append>
           <v-btn icon="mdi-menu" color="white" class="mr-4" @click.stop="expand = !expand" />
         </template>
@@ -28,7 +33,7 @@ const items = [
   {
     title: 'Partiet',
     menu: [
-      { title: 'Om MED', to: '/om' },
+      { title: 'Om MED', to: '/partiet' },
       { title: 'Distrikt och lokalföreningar', to: '/foreningar' },
       { title: 'Ung och fri', to: '/ungochfri' },
       { title: 'Kontakt & Press', to: '/kontakt' },

@@ -175,6 +175,7 @@ function onSubmit() {
     municipality: municipality.value,
     isRecurring: subscribe.value,
     acceptPrivacy: acceptPrivacy.value,
+    email: email.value,
     paymentMethod: {
       card: {
         number: cardNumber.value,

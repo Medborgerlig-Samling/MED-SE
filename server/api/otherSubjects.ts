@@ -32,7 +32,7 @@ function parseSubject(data): ParsedSubject | undefined {
   const baseURL = runtimeConfig.public.baseURL;
 
   const { title, short_description, long_description, important, image } = data;
-  console.log({ important });
+
   if (!important)
     return {
       title,

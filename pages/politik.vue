@@ -1,155 +1,198 @@
 <template>
-  <div class="mx-6">
-    <v-tabs v-model="tab" color="primary">
-      <v-tab :value="1">Hjärtefrågor</v-tab>
-      <v-tab :value="2"> Övriga frågor</v-tab>
-    </v-tabs>
+  <v-sheet class="mx-6 my-10 bg-primary">
 
-    <v-tabs-window v-model="tab">
-      <v-tabs-window-item :value="1">
-        <v-slide-y-transition mode="out-in">
-          <div v-if="!showDetails">
-            <div class="d-flex flex-wrap ga-6 pa-6">
-              <template v-for="subject in mainSubjects" :key="subject?.title">
-                <v-card width="300" color="primary" rounded="lg" flat @click="selectSubject(subject)">
-                  <v-img
-                    :src="subject?.imgSrc"
-                    class="align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    height="200px"
-                    cover
-                    rounded
-                  >
-                    <v-card-title class="text-white">
-                      {{ subject.title }}
-                    </v-card-title>
-                    <v-card-subtitle class="text-white mb-2">
-                      {{ subject.caption }}
-                    </v-card-subtitle>
-                  </v-img>
-                </v-card>
-              </template>
-            </div>
-          </div>
-          <div v-else class="py-6">
-            <v-card flat>
-              <v-btn
-                color="primary"
-                variant="tonal"
-                icon="mdi-close"
-                class="back-button"
-                size="small"
-                @click="showDetails = false"
-              />
+    <!-- Vår politik -->
+    <v-container class="bg-primary">
+      <v-row>
+        <v-col cols="12">
+          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left text-accent">
+            Vår politik <span class="text-white">i korthet</span>
+          </h2>
+        </v-col>
 
-              <v-img :src="selectedSubject?.imgSrc" class="align-end" width="400px" rounded />
-
-              <v-card-item>
-                <v-card-title>{{ selectedSubject?.title }}</v-card-title>
-                <v-card-subtitle>{{ selectedSubject?.caption }}</v-card-subtitle>
-              </v-card-item>
-
-              <v-card-text>{{ selectedSubject?.description }}</v-card-text>
+        <v-col
+          v-for="(policy, index) in policies"
+          :key="index"
+          cols="12"
+          sm="6"
+          md="4"
+        >
+            <v-card
+              v-bind="props"
+              class="pa-4 h-100"
+              color="white"
+              rounded="lg"
+              flat
+            >
+              <v-card-title class="text-h6 font-weight-medium">
+                {{ policy.title }}
+              </v-card-title>
+              <v-card-text>
+                <ul class="pa-0">
+                  <li v-for="(point, idx) in policy.points" :key="idx" class="mb-2">
+                    {{ point }}
+                  </li>
+                </ul>
+              </v-card-text>
             </v-card>
-          </div>
-        </v-slide-y-transition>
-      </v-tabs-window-item>
-      <v-tabs-window-item :value="2">
-        <v-slide-y-transition mode="out-in">
-          <div v-if="!showDetails">
-            <div class="d-flex flex-wrap ga-6 pa-6">
-              <template v-for="subject in otherSubjects" :key="subject.title">
-                <v-card width="300" color="primary" rounded="lg" flat @click="selectSubject(subject)">
-                  <v-img
-                    :src="subject.imgSrc"
-                    class="align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    height="200px"
-                    cover
-                    rounded
-                  >
-                    <v-card-title class="text-white">
-                      {{ subject.title }}
-                    </v-card-title>
-                    <v-card-subtitle class="text-white mb-2">
-                      {{ subject.caption }}
-                    </v-card-subtitle>
-                  </v-img>
-                </v-card>
-              </template>
-            </div>
-          </div>
-          <div v-else class="py-6">
-            <v-card flat>
-              <v-btn
-                color="primary"
-                variant="tonal"
-                icon="mdi-close"
-                class="back-button"
-                size="small"
-                @click="showDetails = false"
-              />
 
-              <v-img :src="selectedSubject?.imgSrc" class="align-end" width="400px" rounded />
+        </v-col>
+      </v-row>
+    </v-container>
 
-              <v-card-item>
-                <v-card-title>{{ selectedSubject?.title }}</v-card-title>
-                <v-card-subtitle>{{ selectedSubject?.caption }}</v-card-subtitle>
-              </v-card-item>
+    <!-- Våra grundprinciper -->
+    <v-container class="mt-16">
+      <v-row>
+        <v-col cols="12">
+          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
+            Våra <span class="text-accent"> grundprinciper</span>
+          </h2>
+        </v-col>
 
-              <v-card-text>{{ selectedSubject?.description }}</v-card-text>
-            </v-card>
-          </div>
-        </v-slide-y-transition>
-      </v-tabs-window-item>
-    </v-tabs-window>
-  </div>
+        <v-col
+          v-for="(principle, i) in principles"
+          :key="i"
+          cols="12"
+          sm="6"
+          md="3"
+        >
+        <CardCorePrinciple
+          :description="principle.description"
+          :title="principle.title"
+          :icon="principle.icon"/>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- Engagera dig -->
+    <v-container class="mt-16 mb-12">
+      <v-row>
+        <v-col cols="12">
+          <h2 class="text-h4 font-weight-bold mb-4 text-center text-md-left">
+            Engagera dig
+          </h2>
+          <p class="text-body-1 mb-6 text-center text-md-left">
+            Vill du vara med och forma Sveriges framtid? Det finns många sätt att göra skillnad.
+          </p>
+        </v-col>
+
+        <v-col cols="12" sm="4" class="mb-4">
+          <v-btn
+            color="primary"
+            block
+            size="large"
+            rounded
+            href="https://www.med.se/bli-medlem/"
+            target="_blank"
+          >
+            Bli medlem
+          </v-btn>
+        </v-col>
+
+        <v-col cols="12" sm="4" class="mb-4">
+          <v-btn
+            color="secondary"
+            block
+            size="large"
+            rounded
+            href="https://www.med.se/donera/"
+            target="_blank"
+          >
+            Donera
+          </v-btn>
+        </v-col>
+
+        <v-col cols="12" sm="4" class="mb-4">
+          <v-btn
+            color="success"
+            block
+            size="large"
+            rounded
+            href="https://www.med.se/var-politik/"
+            target="_blank"
+          >
+            Läs mer om vår politik
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+
+  </v-sheet>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue'
 
-const tab = ref(null);
-const mainSubjects = ref([]);
-const otherSubjects = ref([]);
-const selectedSubject = ref(null);
-const showDetails = ref(false);
+const shown = ref(Array(10).fill(false))
+const shownPrinciples = ref(Array(10).fill(false))
 
-onMounted(async () => {
-  await loadMainsubjects();
-  await loadOtherSubjects();
-});
+const policies = [
+  {
+    title: 'Ekonomi & Skatter',
+    points: [
+      'Sänk skatterna med upp till 20%',
+      'Minska slöseri och avveckla onödiga myndigheter',
+      'Förenkla regler för företagande',
+    ],
+  },
+  {
+    title: 'Demokrati & Medborgarmakt',
+    points: [
+      'Avskaffa partistödet',
+      'Reformera valsystemet',
+      'Stärk yttrandefriheten',
+    ],
+  },
+  {
+    title: 'Trygghet & Rättssäkerhet',
+    points: [
+      'Skärpta straff för grova brott',
+      'Stärk rättsstaten och polisens resurser',
+      'Begränsa invandring och främja återvandring',
+    ],
+  },
+  {
+    title: 'Skola & Utbildning',
+    points: [
+      'Fokus på kunskap och arbetsro',
+      'Stärk lärarnas roll',
+      'Värna det fria skolvalet',
+    ],
+  },
+  {
+    title: 'Kultur & Media',
+    points: [
+      'Avskaffa statligt mediastöd',
+      'Skydda svenska språket',
+      'Främja fri kultur utan politisk styrning',
+    ],
+  },
+  {
+    title: 'Miljö & Hållbarhet',
+    points: [
+      'Hållbar förvaltning av resurser',
+      'Främja grön innovation',
+      'Minska byråkratiska hinder',
+    ],
+  },
+]
 
-async function loadMainsubjects() {
-  const res = await fetch('/api/mainSubjects');
-  mainSubjects.value = await res.json();
-}
+const principles = [
+  {
+    title: 'Frihet',
+    description: 'Individuell frihet, stopp på skatteslöseriet, minskad byråkrati',
+    icon: 'mdi-bird',
+  },
+  {
+    title: 'Trygghet',
+    description: 'Stark rättsstat, ansvarsfull migrationspolitik och effektiv brottsbekämpning .',
+    icon: 'mdi-account-check',
+  },
+  {
+    title: 'Framtidstro',
+    description: 'Ekonomisk tillväxt, entreprnörskap, tron på individen',
+    icon: 'mdi-school',
+  },
 
-async function loadOtherSubjects() {
-  const res = await fetch('/api/otherSubjects');
-  otherSubjects.value = await res.json();
-}
-
-function selectSubject(subject) {
-  selectedSubject.value = subject;
-  showDetails.value = true;
-}
+]
 </script>
-
-<style scoped>
-.crown {
-  font-size: 4rem;
-  margin-right: 1rem;
-  position: absolute;
-  top: 0rem;
-  left: 10.5rem;
-  z-index: 4000000;
-}
-
-.back-button {
-  position: absolute;
-  z-index: 100;
-  top: 0.3rem;
-  left: 0.3rem;
-}
-</style>

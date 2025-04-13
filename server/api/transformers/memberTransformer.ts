@@ -2,8 +2,8 @@ import type { MemberRequest, ParsedMember } from '~/types/api/member';
 
 export function transformMemberData(data: { [member: string]: MemberRequest }, baseURL: string): ParsedMember | null {
   if (!data) return null;
-  const { member } = data;
-  console.dir(member);
+  const { member, role } = data;
+
   return {
     firstName: member.first_name,
     familyName: member.family_name,
@@ -18,5 +18,7 @@ export function transformMemberData(data: { [member: string]: MemberRequest }, b
     email: member.email,
     ...(member.facebook && { facebook: member.facebook }),
     ...(member.twitter && { twitter: member.twitter }),
+    ...(member.boardmember && { role: member.boardmember.role }),
+    ...(member.spokesperson && { role: member.spokesperson.role }),
   };
 }

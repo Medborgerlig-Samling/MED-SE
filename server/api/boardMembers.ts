@@ -12,6 +12,5 @@ export default defineEventHandler(async () => {
       },
     },
   });
-  console.dir(boardMembers, { depth: null });
   return boardMembers.data.map((e) => transformMemberData(e, baseUrl));
 });

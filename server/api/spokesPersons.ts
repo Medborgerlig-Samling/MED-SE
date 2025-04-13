@@ -13,6 +13,5 @@ export default defineEventHandler(async () => {
     },
   });
 
-  console.dir(spokespersons, { depth: null });
   return spokespersons.data.map((e) => transformMemberData(e, baseUrl));
 });

@@ -3,7 +3,7 @@
     <Transition name="fade" mode="out-in">
       <div v-if="!selectedSpokespersonSlug" key="list">
         <div class="d-flex flex-wrap ga-6 pa-6">
-          <template v-for="spokesperson in item" :key="spokesperson.slug">
+          <template v-for="spokesperson in spokesPersons" :key="spokesperson.slug">
             <v-card 
               width="300" color="primary" rounded="lg" flat @click="navigateToSpokesperson(spokesperson.slug)">
               <v-img
@@ -35,18 +35,16 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const item = ref(null);
+const memberStore = useMemberStore();
+const { spokesPersons } = storeToRefs(memberStore)
 
-onMounted(async () => {
-  const res = await fetch('/api/spokesPersons');
-  item.value = await res.json();
-});
+onBeforeMount(async () => 
+  !spokesPersons.value.length && await memberStore.fetchSpokesPersons()
+);
 
 const selectedSpokespersonSlug = computed(() => route.params.slug as string);
+const navigateToSpokesperson = (slug: string) => router.push(`/partiet/${slug}`)
 
-function navigateToSpokesperson(slug: string) {
-  router.push(`/partiet/${slug}`);
-}
 </script>
 
 <style scoped>

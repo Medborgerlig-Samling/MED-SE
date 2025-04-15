@@ -1,6 +1,6 @@
 <template>
   <div class="bg-primary">
-    <component :is="heroComponent" v-if="hero && hero.title && hero.CTA && hero.image" v-bind="hero" />
+    <HeroDefaultDesktop v-bind="hero" />
     <v-container>
       <v-spacer />
     </v-container>
@@ -77,65 +77,21 @@
 
 <script setup lang="ts">
 import type { Hero } from '~/types/layout/Hero';
-import { defineAsyncComponent } from 'vue';
-
 
 const hero = ref<Hero | null>(null);
-const newsItems = ref([]);
-const posts = ref<any[]>([]);
 
-// Fetch data on mount
-onMounted(async () => {
+onBeforeMount(async () => {
   try {
     const res = await fetch('/api/home');
     const json = await res.json();
-
-    const news = await fetch('/api/news/getAllNews');
-    const parsed = await news.json();
-    newsItems.value = parsed;
-
     hero.value = json.hero;
 
-    // Fetch X posts
-    await fetchXPosts();
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
   }
 });
 
-// Fetch X posts for two representatives
-const fetchXPosts = async () => {
-  const usernames = ['DanielSonnesson'];
 
-  try {
-    const fetchedPosts = [];
-    for (const username of usernames) {
-      // Call server route instead of X API directly
-      const userResponse = await $fetch(`/api/feed/getFeed?user=${username}`);
-      const userId = userResponse.data.id;
-
-      const postsResponse = await $fetch(
-        `/api/x/users/${userId}/tweets?max_results=5&tweet.fields=created_at`
-      );
-      fetchedPosts.push(
-        ...postsResponse.data.map((post: any) => ({
-          id: post.id,
-          text: post.text,
-          created_at: post.created_at,
-          user: { name: userResponse.data.name, username: userResponse.data.username },
-        }))
-      );
-    }
-    // Sort posts by date (newest first)
-    posts.value = fetchedPosts.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-  } catch (error) {
-    console.error('Error fetching X posts:', error);
-  }
-};
-
-// Format date for display
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('sv-SE', {
     year: 'numeric',
@@ -145,12 +101,6 @@ const formatDate = (dateString: string) => {
     minute: '2-digit',
   });
 };
-
-const breakpoint = useBreakpoint();
-
-const heroComponent = defineAsyncComponent(() =>
-  import(`~/components/Hero/Default${breakpoint.value}.vue`)
-);
 
 const principles = [
   {
@@ -173,5 +123,14 @@ const principles = [
   },
 ];
 
-const model = ref(0);
+
+onMounted(async () =>{
+  const memberStore = useMemberStore();
+  
+  await Promise.all([
+    await memberStore.fetchPartyLeader(),
+    await memberStore.fetchViceLeader(),
+    await memberStore.fetchSpokesPersons(),
+  ])
+})
 </script>

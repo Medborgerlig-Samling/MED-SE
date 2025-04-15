@@ -18,7 +18,7 @@
       </v-main>
 
       <FooterMobile />
-      <NavigationDrawerMobile :value="expand" :items="items" />
+      <NavigationDrawerDesktop :value="expand" :items="items" />
     </v-app>
   </v-responsive>
 </template>

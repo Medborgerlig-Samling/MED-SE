@@ -20,36 +20,18 @@ const route = useRoute();
 const router = useRouter();
 
 const tab = ref(1);
-const partyLeader = ref(null);
-const viceLeader = ref(null);
-const spokesPersons = ref([]);
 
-async function loadBoardMembers() {
-  const leader =  await fetch('/api/members/findByRole?role=ordförande&collection=boardmembers')
-  partyLeader.value = await leader.json()
-
-  const vice = await fetch('/api/members/findByRole?role=vice ordförande&collection=boardmembers')
-  viceLeader.value = await vice.json()
-}
-
-async function loadSpokesPersons() {
-  const res = await fetch('/api/spokesPersons');
-  const data = await res.json();
-
-  spokesPersons.value = data.map((member) => ({
-    ...member,
-  }));
-}
+const memberStore = useMemberStore();
+const { partyLeader, viceLeader } = storeToRefs(memberStore)
 
 function updateTabFromRoute() {
   const path = route.path;
-  if (path.includes(partyLeader.value?.slug || 'daniel_sonesson')) {
+  if (path.includes(partyLeader.value?.slug || 'daniel_sonesson')) 
     tab.value = 1;
-  } else if (path.includes(viceLeader.value?.slug || 'mikael_flink')) {
+  else if (path.includes(viceLeader.value?.slug || 'mikael_flink')) 
     tab.value = 2;
-  } else if (path === '/partiet/talespersoner') {
+  else if (path === '/partiet/talespersoner') 
     tab.value = 3;
-  }
 }
 
 watch(tab, async (newTab) => {
@@ -60,9 +42,8 @@ watch(tab, async (newTab) => {
       ? `/partiet/${viceLeader.value?.slug || 'mikael_flink'}`
       : '/partiet/talespersoner';
 
-  if (route.path !== targetRoute) {
-    await router.push(targetRoute);
-  }
+  if (route.path !== targetRoute) await router.push(targetRoute);
+  
 });
 
 watch(
@@ -73,31 +54,9 @@ watch(
   { immediate: true },
 );
 
-onMounted(async () => {
-  await loadBoardMembers();
-  await loadSpokesPersons();
-
-  if (route.path === '/partiet' && partyLeader.value?.slug) {
+onBeforeMount(async () => {
+  if (route.fullPath === '/partiet' && partyLeader.value?.slug) {
     router.replace(`/partiet/${partyLeader.value.slug}`);
   }
 });
 </script>
-
-<style scoped>
-.back-button {
-  position: absolute;
-  z-index: 100;
-  top: 1rem;
-  right: 1rem;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

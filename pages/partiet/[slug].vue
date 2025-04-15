@@ -42,10 +42,6 @@
       </v-slide-group>
     </div>
   </div>
-
-  <div v-else>
-    <p>Medlemmen hittades inte.</p>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,13 +54,11 @@ const display = ref(useDisplay());
 
 const item = ref(null);
 const route = useRoute();
-
 const model = ref(null);
-onMounted(async () => {
+
+onBeforeMount(async () => {
   const slug = route.params.slug;
   const res = await fetch(`/api/members/findBySlug?slug=${encodeURIComponent(slug)}`);
   item.value = await res.json();
-
-  console.log(item.value)
 });
 </script>

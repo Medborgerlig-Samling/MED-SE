@@ -1,11 +1,10 @@
 <template>
   <v-parallax 
-    :src="image || '/hero_placeholder.jpg'" 
+    :src="image" 
     rounded 
-    max-height="800"
-    gradient="to top right, rgba(0, 0, 0, 1) 100%"
+    placeholder="hero_placeholder.jpg"
+    height="85vh"
   >
-
     <div class="wrapper h-100">
       <v-sheet color="transparent" class="d-flex text-white flex-column text-primary pa-6 h-100">
         <h4 class="text-h5 font-weight-bold mb-4 bg-accent title pa-2">{{ role }}</h4>
@@ -19,6 +18,7 @@
             class="mr-3 mt-5"
             icon="mdi-twitter"
             color="accent"
+            flat
             :href="`https://www.x.com/${twitter}`"
             target="_blank"
           />
@@ -26,17 +26,18 @@
             class="mr-3 mt-5" 
             color="accent" 
             icon="mdi-email" 
+            flat
             :href="`mailto:${email}`"
           />
-          <div class=" ml-auto d-flex align-center" >
-          <span class="">Om {{firstName}}</span>
-          <v-icon 
-            class=" ml-auto" 
-            icon="mdi-chevron-double-down" 
-            size="x-large"
-            color="accent"
-          />
+          <div class="down-icon d-flex flex-column" >
+            <v-icon 
+              class="ml-auto" 
+              icon="mdi-chevron-double-down" 
+              size="x-large"
+              color="accent"
+            />
           </div>
+
         </div>
       </v-sheet>
     </div>
@@ -68,13 +69,9 @@ defineProps<
   width: fit-content;
 }
 
-.action {
+.down-icon {
   position: absolute;
-  right: 0;
-}
-
-:deep(.v-responsive__sizer) {
-  background: #000000;
-  background: linear-gradient(45deg, black, transparent);
+  bottom: 1rem;
+  right: 50%;
 }
 </style>

@@ -8,7 +8,7 @@
 
         <template v-else>
           <v-expansion-panel-title color="primary"> {{ item.title }}</v-expansion-panel-title>
-          <v-expansion-panel-text color="primary" class="bg-secondary">
+          <v-expansion-panel-text color="primary" class="bg-primary">
             <v-list color="primary" class="bg-primary">
               <v-list-item v-for="{ title, to } in item.menu" :key="title" :value="to" :to="to" color="primary">
                 <v-list-item-title color="primary" class="w-full">{{ title }}</v-list-item-title>

@@ -44,7 +44,7 @@ export default defineNuxtPlugin((nuxtApp) => {
             secondary: colors.blueLight,
             // secondary: '#3E7DBB',
             accent: '#cd4858',
-            background: colors.blueDark,
+            background: colors.primary,
             // background: themeColors.bg[100],
             text: themeColors.bg[200],
             error: '770737',

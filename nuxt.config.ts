@@ -6,6 +6,7 @@ function vuetifyConfig(_options, nuxt) {
   });
 }
 export default defineNuxtConfig({
+  ssr: true,
   modules: [vuetifyConfig, '@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/strapi', '@nuxtjs/device', '@unlok-co/nuxt-stripe'],
   // '@dargmuesli/nuxt-cookie-control',
   // cookieControl: {

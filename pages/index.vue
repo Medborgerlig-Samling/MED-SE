@@ -125,12 +125,16 @@ const principles = [
 
 
 onMounted(async () =>{
-  const memberStore = useMemberStore();
+  nextTick(async () => {
+    const memberStore = useMemberStore();
   
-  await Promise.all([
-    await memberStore.fetchPartyLeader(),
-    await memberStore.fetchViceLeader(),
-    await memberStore.fetchSpokesPersons(),
-  ])
+    await Promise.all([
+      await memberStore.fetchPartyLeader(),
+      await memberStore.fetchViceLeader(),
+      await memberStore.fetchSpokesPersons(),
+    ])
+  }
+
+)
 })
 </script>

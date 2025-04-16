@@ -1,62 +1,82 @@
 <template>
   <div>
-    <v-tabs v-model="tab" color="accent" center-active>
-      <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`"> Partiledare </v-tab>
-      <v-tab :value="2" :to="`/partiet/${viceLeader?.slug || 'mikael_flink'}`"> Vice ordförande </v-tab>
-      <v-tab :value="3" :to="`/partiet/talespersoner`"> Talespersoner </v-tab>
+    <v-tabs v-model="activeTab" color="accent" center-active>
+      <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`">Partiledare</v-tab>
+      <v-tab :value="2" :to="`/partiet/${viceLeader?.slug || 'mikael_flink'}`">Vice ordförande</v-tab>
+      <v-tab :value="3" :to="`/partiet/talespersoner`">Talespersoner</v-tab>
     </v-tabs>
 
     <Suspense>
-      <NuxtPage v-if="tab === 1 || tab === 2" key="board" />
-      <NuxtPage v-else-if="tab === 3" key="spokespersons" />
+      <template #default>
+        <NuxtPage :key="pageKey" />
+      </template>
+      <template #fallback>
+        <div>Loading...</div>
+      </template>
     </Suspense>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
+import { debounce } from 'lodash-es';
 
 const route = useRoute();
 const router = useRouter();
-
-const tab = ref(1);
-
 const memberStore = useMemberStore();
-const { partyLeader, viceLeader } = storeToRefs(memberStore)
+const { partyLeader, viceLeader, selectedMember } = storeToRefs(memberStore);
 
-function updateTabFromRoute() {
-  const path = route.path;
-  if (path.includes(partyLeader.value?.slug || 'daniel_sonesson')) 
-    tab.value = 1;
-  else if (path.includes(viceLeader.value?.slug || 'mikael_flink')) 
-    tab.value = 2;
-  else if (path === '/partiet/talespersoner') 
-    tab.value = 3;
-}
+const routeToTabMap = computed(() => {
+  const map: Record<string, number> = {
+    [`/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`]: 1,
+    [`/partiet/${viceLeader.value?.slug || 'mikael_flink'}`]: 2,
+    '/partiet/talespersoner': 3,
+  };
 
-watch(tab, async (newTab) => {
-  const targetRoute =
-    newTab === 1
-      ? `/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`
-      : newTab === 2
-      ? `/partiet/${viceLeader.value?.slug || 'mikael_flink'}`
-      : '/partiet/talespersoner';
+  const slug = route.params.slug as string;
+  if (
+    slug &&
+    slug !== partyLeader.value?.slug &&
+    slug !== viceLeader.value?.slug &&
+    slug !== 'talespersoner'
+  ) {
+    map[route.path] = 3;
+  }
 
-  if (route.path !== targetRoute) await router.push(targetRoute);
-  
+  return map;
 });
 
-watch(
-  () => route.path,
-  () => {
-    updateTabFromRoute();
-  },
-  { immediate: true },
-);
 
-onBeforeMount(async () => {
-  if (route.fullPath === '/partiet' && partyLeader.value?.slug) {
-    router.replace(`/partiet/${partyLeader.value.slug}`);
+const activeTab = computed({
+  get() {
+    return routeToTabMap.value[route.path] || 1;
+  },
+  set: debounce(async (newTab: number) => {
+    const targetRoute = getTargetRoute(newTab);
+    if (route.path !== targetRoute) {
+      try {
+        await router.push(targetRoute);
+      } catch (error) {
+        console.error('Navigation error:', error);
+      }
+    }
+  }, 100),
+});
+
+const pageKey = computed(() => route.path); // Use route.path for unique key
+
+function getTargetRoute(tab: number): string {
+  if (tab === 1) return `/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`;
+  if (tab === 2) return `/partiet/${viceLeader.value?.slug || 'mikael_flink'}`;
+  return '/partiet/talespersoner';
+}
+
+onMounted(async () => {
+  if (!partyLeader.value) {
+    await memberStore.fetchPartyLeader();
+  }
+  if (route.path === '/partiet') {
+    await router.replace(`/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`);
   }
 });
 </script>

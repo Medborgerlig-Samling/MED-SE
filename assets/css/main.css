@@ -1,24 +1,11 @@
-@import '@fontsource/montserrat/400.css'; /* Regular */
-@import '@fontsource/montserrat/700.css'; /* Bold for headings */
-@import '@fontsource/inter/400.css'; /* Regular for body */
-
-@import '@fontsource/jost/400.css'; /* Regular for body */
-@import '@fontsource/jost/500.css'; /* Regular for body */
-@import '@fontsource/jost/600.css'; /* Regular for body */
-@import '@fontsource/jost/700.css'; /* Regular for body */
-@import '@fontsource/jost/800.css'; /* Regular for body */
-@import '@fontsource/jost/900.css'; /* Regular for body */
-
 @import '@fontsource/ubuntu/400.css'; /* Regular for body */
 @import '@fontsource/ubuntu/500.css'; /* Regular for body */
 @import '@fontsource/ubuntu/700.css'; /* Regular for body */
-
 @import '@fontsource/rubik/400.css'; /* Regular for body */
 @import '@fontsource/rubik/500.css'; /* Regular for body */
 @import '@fontsource/rubik/700.css'; /* Regular for body */
-
 @import '@fontsource/ubuntu/400.css'; /* Regular for body */
-@import '@fontsource/inter/500.css'; /* Medium for emphasis */
+
 
 /* Override Vuetify defaults */
 h1,

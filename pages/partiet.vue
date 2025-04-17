@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-tabs v-model="activeTab" color="accent" center-active>
-      <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`">Partiledare</v-tab>
+      <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`">Ordförande</v-tab>
       <v-tab :value="2" :to="`/partiet/${viceLeader?.slug || 'mikael_flink'}`">Vice ordförande</v-tab>
       <v-tab :value="3" :to="`/partiet/talespersoner`">Talespersoner</v-tab>
     </v-tabs>

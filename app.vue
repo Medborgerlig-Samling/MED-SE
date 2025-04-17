@@ -15,4 +15,6 @@ import { useDisplay } from 'vuetify';
   return 'mobile';
 });
 
+
+provide('layout', layout)
 </script>

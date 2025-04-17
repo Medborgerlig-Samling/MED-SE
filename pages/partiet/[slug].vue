@@ -1,6 +1,7 @@
 <template>
   <div v-if="selectedMember">
     <HeroMemberDesktop
+      v-if="layout !== 'mobile'" 
       :image="selectedMember.heroPic"
       :role="selectedMember.role"
       :slogan="selectedMember.slogan"
@@ -10,7 +11,18 @@
       :twitter="selectedMember.twitter"
       :email="selectedMember.email"
     />
-    <div v-if="selectedMember.about" class="my-10 mx-auto pa-8 rounded bg-primary" :class="display.lgAndUp ? 'w-50' : 'w-100'">
+    <HeroMemberMobile
+      v-else
+      :image="selectedMember.heroPic"
+      :role="selectedMember.role"
+      :slogan="selectedMember.slogan"
+      :first-name="selectedMember.firstName"
+      :family-name="selectedMember.familyName"
+      :portrait="selectedMember.profilePic"
+      :twitter="selectedMember.twitter"
+      :email="selectedMember.email"
+    />
+    <div v-if="selectedMember.about" id="about-section"  class="my-10 mx-auto pa-8 rounded bg-primary" :class="display.lgAndUp ? 'w-50' : 'w-100'">
       <BlocksRenderer :content="selectedMember.about" />
     </div>
 
@@ -63,6 +75,8 @@ import { BlocksRenderer } from '~/utils/blocksRenderer';
 import { useDisplay } from 'vuetify';
 
 defineProps<{ member: 'spokesperson' | 'boardmember' }>();
+const layout = inject('layout')
+
 const memberStore = useMemberStore();
 const { selectedMember } = storeToRefs(memberStore);
 const display = ref(useDisplay());

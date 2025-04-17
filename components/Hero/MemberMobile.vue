@@ -3,7 +3,7 @@
     :src="image" 
     rounded 
     placeholder="hero_placeholder.jpg"
-    height="85vh"
+    height="60vh"
   >
     <div class="wrapper h-100">
       <v-sheet color="transparent" class="d-flex text-white flex-column text-primary pa-6 h-100">
@@ -65,11 +65,10 @@ const scrollToNextSection = () => {
     nextSection.scrollIntoView({ behavior: 'smooth' });
   else 
     window.scrollTo({
-      top: window.innerHeight * 0.85,
+      top: window.innerHeight * 0.6,
       behavior: 'smooth'
     });
 };
-
 </script>
 
 <style scoped>
@@ -83,7 +82,7 @@ const scrollToNextSection = () => {
 
 .down-icon {
   position: absolute;
-  bottom: 1rem;
-  right: 50%;
+  bottom: 3rem;
+  right: 6%;
 }
 </style>

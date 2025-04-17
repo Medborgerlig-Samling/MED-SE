@@ -14,11 +14,8 @@
                 cover
                 rounded
               >
-              <v-card-text>  {{ spokesperson.role }}</v-card-text>
-                <v-card-title class="text-white">{{
-                  `${spokesperson?.firstName} ${spokesperson?.familyName}`
-                }}</v-card-title>
-                <v-card-subtitle class="text-white mb-2">{{ spokesperson.title }}</v-card-subtitle>
+                <v-card-title class="text-white">{{`${spokesperson?.firstName} ${spokesperson?.familyName}`}}</v-card-title>
+                <v-card-subtitle class="text-white mb-2">{{ spokesperson.role }}</v-card-subtitle>
               </v-img>
             </v-card>
           </template>

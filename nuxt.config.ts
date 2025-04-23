@@ -64,7 +64,7 @@ export default defineNuxtConfig({
         annual: process.env.STRIPE_TEST_ANNUAL,
         oneYear: process.env.STRIPE_ONE_YEAR_ANNUAL,
       },
-      baseURL: process.env.NUXT_PUBLIC_BASE_URL || 'https://api.example.com/',
+      baseURL: process.env.NUXT_PUBLIC_BASE_URL || 'https://blessed-smile-dc3f0f8622.strapiapp.com',
     },
   },
   devtools: { enabled: true },

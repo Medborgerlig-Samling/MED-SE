@@ -1,4 +1,10 @@
 <template>
+  <Seo
+    :meta_title="selectedPage?.seo.meta_title"
+    :meta_description="selectedPage?.seo.meta_description"
+    :canonical="selectedPage?.seo.canonical"
+    :ogImage="selectedPage?.seo.ogImageUrl"
+  />
   <div class="bg-primary">
     <HeroDefaultDesktop v-if="layout !== 'mobile'" v-bind="selectedPage?.hero" />
     <HeroDefaultMobile v-else v-bind="selectedPage?.hero" />
@@ -40,6 +46,7 @@
       </v-row>
     </v-container>
   </div>
+
 </template>
 
 <script setup lang="ts">

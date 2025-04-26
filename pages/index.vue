@@ -1,10 +1,4 @@
 <template>
-  <Seo
-    :meta_title="selectedPage?.seo.meta_title"
-    :meta_description="selectedPage?.seo.meta_description"
-    :canonical="selectedPage?.seo.canonical"
-    :ogImage="selectedPage?.seo.ogImageUrl"
-  />
   <div class="bg-primary">
     <HeroDefaultDesktop v-if="layout !== 'mobile'" v-bind="selectedPage?.hero" />
     <HeroDefaultMobile v-else v-bind="selectedPage?.hero" />
@@ -51,9 +45,13 @@
 
 <script setup lang="ts">
 
+import { useSeo } from '~/composables/useSeo';
+import { watch } from 'vue';
 const pagesStore = usePagesStore()
 const memberStore = useMemberStore();
 const { selectedPage } = storeToRefs(pagesStore)
+
+const seo = selectedPage?.seo || {};
 
 const layout = inject('layout')
 
@@ -96,4 +94,17 @@ const principles = [
     image: 'framtidstro.jpg',
   },
 ];
+
+watch(
+  () => selectedPage.value?.seo,
+  (seo) => {
+    useSeo({
+      meta_title: seo?.meta_title || '',
+      meta_description: seo?.meta_description,
+      canonical: seo?.canonical,
+      ogImage: seo?.ogImageUrl,
+    });
+  },
+  { immediate: true }
+);
 </script>

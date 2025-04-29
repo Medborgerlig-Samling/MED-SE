@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="primary" flat>
     <NuxtLink to="/" class="mr-4">
-      <v-img :src="logo" height="80" width="145" alt="Site Logo"/>
+      <v-img :src="logo" height="80" width="145" alt="Site Logo" />
     </NuxtLink>
     <div class="d-flex justify-space-start w-100 ga-3">
       <template v-for="{ title, to, menu } in items" :key="title">

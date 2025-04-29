@@ -1,198 +1,79 @@
 <template>
-  <v-sheet class="mx-6 my-10 bg-primary">
+  <div>
+    <div v-if="!selectedSubjectSlug" key="list">
+      <v-container class="bg-primary">
+        <v-row>
+          <v-col cols="12">
+            <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left text-accent">
+              Vår  <span class="text-white">politik</span>
+            </h2>
+          </v-col>
 
-    <!-- Vår politik -->
-    <v-container class="bg-primary">
-      <v-row>
-        <v-col cols="12">
-          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left text-accent">
-            Vår politik <span class="text-white">i korthet</span>
-          </h2>
-        </v-col>
+          <template v-for="({title, subtitle, image, slug}) in subjects" :key="slug">
 
-        <v-col
-          v-for="(policy, index) in policies"
-          :key="index"
-          cols="12"
-          sm="6"
-          md="4"
-        >
-            <v-card
-              v-bind="props"
-              class="pa-4 h-100"
-              color="white"
-              rounded="lg"
-              flat
-            >
-              <v-card-title class="text-h6 font-weight-medium">
-                {{ policy.title }}
-              </v-card-title>
-              <v-card-text>
-                <ul class="pa-0">
-                  <li v-for="(point, idx) in policy.points" :key="idx" class="mb-2">
-                    {{ point }}
-                  </li>
-                </ul>
-              </v-card-text>
-            </v-card>
-
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <!-- Våra grundprinciper -->
-    <v-container class="mt-16">
-      <v-row>
-        <v-col cols="12">
-          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
-            Våra <span class="text-accent"> grundprinciper</span>
-          </h2>
-        </v-col>
-
-        <v-col
-          v-for="(principle, i) in principles"
-          :key="i"
-          cols="12"
-          sm="6"
-          md="3"
-        >
-        <CardCorePrinciple
-          :description="principle.description"
-          :title="principle.title"
-          :icon="principle.icon"/>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <!-- Engagera dig -->
-    <v-container class="mt-16 mb-12">
-      <v-row>
-        <v-col cols="12">
-          <h2 class="text-h4 font-weight-bold mb-4 text-center text-md-left">
-            Engagera dig
-          </h2>
-          <p class="text-body-1 mb-6 text-center text-md-left">
-            Vill du vara med och forma Sveriges framtid? Det finns många sätt att göra skillnad.
-          </p>
-        </v-col>
-
-        <v-col cols="12" sm="4" class="mb-4">
-          <v-btn
-            color="primary"
-            block
-            size="large"
-            rounded
-            href="https://www.med.se/bli-medlem/"
-            target="_blank"
+          <v-col
+            cols="12"
+            sm="12"
+            md="6"
+            lg="3"
           >
-            Bli medlem
-          </v-btn>
-        </v-col>
-
-        <v-col cols="12" sm="4" class="mb-4">
-          <v-btn
-            color="secondary"
-            block
-            size="large"
-            rounded
-            href="https://www.med.se/donera/"
-            target="_blank"
-          >
-            Donera
-          </v-btn>
-        </v-col>
-
-        <v-col cols="12" sm="4" class="mb-4">
-          <v-btn
-            color="success"
-            block
-            size="large"
-            rounded
-            href="https://www.med.se/var-politik/"
-            target="_blank"
-          >
-            Läs mer om vår politik
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-
-  </v-sheet>
+              <v-card
+                class="h-100 subject-card"
+                rounded="lg"
+                flat
+                @click="navigateToSubject(slug)"
+              >
+                <v-img 
+                  :src="image" 
+                  class="d-flex"
+                  gradient="to top right, rgba(0,0,0,.2), rgba(0,0,0,.3)"
+                >
+                <div class="d-flex h-100 w-100 align-center ju">
+                <div class=" w-100 d-flex flex-column align-center justify-end mt-auto bg-overlay wrap">
+                  <v-card-title class="text-h5 mt-auto font-weight-medium text-white" >
+                    {{ title }}
+                  </v-card-title>
+                  <v-card-subtitle class="text-subtitle-1 text-white mb-6">
+                    {{ subtitle }}
+                  </v-card-subtitle>
+                </div>
+              </div>
+                </v-img>
+              </v-card>
+          </v-col>
+          </template>        
+          </v-row>
+      </v-container>
+    </div>
+    <NuxtPage v-else member="spokesperson" />
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+const route = useRoute();
+const router = useRouter();
+const politicsStore = usePoliticsStore()
+const { subjects } = storeToRefs(usePoliticsStore())
 
-const shown = ref(Array(10).fill(false))
-const shownPrinciples = ref(Array(10).fill(false))
+onBeforeMount(async () =>  
+  !subjects.value.length && await politicsStore.fetchSubjects()
+)
 
-const policies = [
-  {
-    title: 'Ekonomi & Skatter',
-    points: [
-      'Sänk skatterna med upp till 20%',
-      'Minska slöseri och avveckla onödiga myndigheter',
-      'Förenkla regler för företagande',
-    ],
-  },
-  {
-    title: 'Demokrati & Medborgarmakt',
-    points: [
-      'Avskaffa partistödet',
-      'Reformera valsystemet',
-      'Stärk yttrandefriheten',
-    ],
-  },
-  {
-    title: 'Trygghet & Rättssäkerhet',
-    points: [
-      'Skärpta straff för grova brott',
-      'Stärk rättsstaten och polisens resurser',
-      'Begränsa invandring och främja återvandring',
-    ],
-  },
-  {
-    title: 'Skola & Utbildning',
-    points: [
-      'Fokus på kunskap och arbetsro',
-      'Stärk lärarnas roll',
-      'Värna det fria skolvalet',
-    ],
-  },
-  {
-    title: 'Kultur & Media',
-    points: [
-      'Avskaffa statligt mediastöd',
-      'Skydda svenska språket',
-      'Främja fri kultur utan politisk styrning',
-    ],
-  },
-  {
-    title: 'Miljö & Hållbarhet',
-    points: [
-      'Hållbar förvaltning av resurser',
-      'Främja grön innovation',
-      'Minska byråkratiska hinder',
-    ],
-  },
-]
+const selectedSubjectSlug = computed(() =>route.params.slug as string);
+const navigateToSubject = (slug: string) => router.push(`/politik/${slug}`)
 
-const principles = [
-  {
-    title: 'Frihet',
-    description: 'Individuell frihet, stopp på skatteslöseriet, minskad byråkrati',
-    icon: 'mdi-bird',
-  },
-  {
-    title: 'Trygghet',
-    description: 'Stark rättsstat, ansvarsfull migrationspolitik och effektiv brottsbekämpning .',
-    icon: 'mdi-account-check',
-  },
-  {
-    title: 'Framtidstro',
-    description: 'Ekonomisk tillväxt, entreprnörskap, tron på individen',
-    icon: 'mdi-school',
-  },
-
-]
 </script>
+
+<style scoped>
+.subject-card {
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
+}
+
+.bg-overlay {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+</style>

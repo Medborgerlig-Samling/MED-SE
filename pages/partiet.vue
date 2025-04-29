@@ -24,7 +24,7 @@ import { debounce } from 'lodash-es';
 const route = useRoute();
 const router = useRouter();
 const memberStore = useMemberStore();
-const { partyLeader, viceLeader, selectedMember } = storeToRefs(memberStore);
+const { partyLeader, viceLeader } = storeToRefs(memberStore);
 
 const routeToTabMap = computed(() => {
   const map: Record<string, number> = {

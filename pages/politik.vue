@@ -28,12 +28,12 @@
                   class="d-flex"
                   gradient="to top right, rgba(0,0,0,.2), rgba(0,0,0,.3)"
                 >
-                <div class="d-flex h-100 w-100 align-center ju">
-                <div class=" w-100 d-flex flex-column align-center justify-end mt-auto bg-overlay wrap">
-                  <v-card-title class="text-h5 mt-auto font-weight-medium text-white" >
+                <div class="d-flex h-100 w-100 align-center">
+                <div class="h-25 d-flex flex-column align-center w-100 text-center text-pre-wrap justify-end mt-auto bg-overlay wrap">
+                  <h5 class="text-h5 text-break mt-auto font-weight-medium text-white" >
                     {{ title }}
-                  </v-card-title>
-                  <v-card-subtitle class="text-subtitle-1 text-white mb-6">
+                  </h5>
+                  <v-card-subtitle class="text-subtitle-1 text-pre-wrap  w-100 text-white mb-6">
                     {{ subtitle }}
                   </v-card-subtitle>
                 </div>

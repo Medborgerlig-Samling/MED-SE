@@ -88,6 +88,9 @@ export const Block = ({ content, componentsContext }: BlockProps) => {
 
     return Block({ content: childNode, componentsContext });
   });
+  if (type === 'paragraph') {
+    return [BlockComponent({ children: theChildren, ...augmentedProps }), h('br')];
+  }
 
   return BlockComponent({ children: theChildren, ...augmentedProps });
 };

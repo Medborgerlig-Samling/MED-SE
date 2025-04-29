@@ -29,7 +29,6 @@ export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: 
 
   return {
     slug,
-    seo: useSeoParser(data),
     coreValues:
       corevalues?.map((coreValue) => ({
         title: coreValue.title,

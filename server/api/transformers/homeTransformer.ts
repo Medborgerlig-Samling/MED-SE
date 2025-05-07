@@ -23,9 +23,16 @@ interface HomeData {
       value: string;
     };
   };
+  seo: {
+    meta_title: string;
+    meta_description: string;
+    og_image: { url: string }[];
+  };
 }
 export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: string }) {
-  const { slug, hero, news_items, corevalues } = data;
+
+  const { slug, hero, news_items, corevalues,  seo } = data;
+
 
   return {
     slug,
@@ -56,5 +63,10 @@ export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: 
       },
       image: hero.image?.[0] ? hero.image[0].url : null,
     },
+    seo: {
+      meta_title: seo.meta_title,
+      meta_description: seo.meta_description,
+      ogImageUrl: seo.og_image?.[0] ? seo.og_image[0].url : null,
+    }
   };
 }

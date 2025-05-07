@@ -30,6 +30,9 @@ export default defineEventHandler(async () => {
       hero: {
         populate: '*',
       },
+      seo: {
+        populate: '*', 
+      },
     },
   });
 

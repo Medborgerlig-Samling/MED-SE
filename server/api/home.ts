@@ -8,6 +8,25 @@ export default defineEventHandler(async () => {
 
   const defaultHomepage = await home.find({
     populate: {
+      // corevalues: {
+      //   fields: ['slug', 'title', 'subtitle'],
+      //   populate: {
+      //     images: {
+      //       fields: ['formats'],
+      //     },
+      //   },
+      // },
+      news_items: {
+        fields: ['caption', 'url', 'source'],
+        populate: {
+          tags: {
+            fields: ['label', 'value'],
+          },
+          image: {
+            fields: ['formats'],
+          },
+        },
+      },
       hero: {
         populate: '*',
       },

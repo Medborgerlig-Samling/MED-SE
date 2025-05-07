@@ -1,10 +1,5 @@
 <template>
-  <v-parallax 
-    :src="image" 
-    rounded 
-    placeholder="hero_placeholder.jpg"
-    height="85vh"
-  >
+  <v-parallax :src="image" rounded placeholder="hero_placeholder.jpg" height="85vh">
     <div class="wrapper h-100">
       <v-sheet color="transparent" class="d-flex text-white flex-column text-primary pa-6 h-100">
         <h4 class="text-h5 font-weight-bold mb-4 bg-accent title pa-2">{{ role }}</h4>
@@ -22,23 +17,16 @@
             :href="`https://www.x.com/${twitter}`"
             target="_blank"
           />
-          <v-btn 
-            class="mr-3 mt-5" 
-            color="accent" 
-            icon="mdi-email" 
-            flat
-            :href="`mailto:${email}`"
-          />
-          <div class="down-icon d-flex flex-column" >
-            <v-icon 
-              class="ml-auto" 
-              icon="mdi-chevron-double-down" 
+          <v-btn class="mr-3 mt-5" color="accent" icon="mdi-email" flat :href="`mailto:${email}`" />
+          <div class="down-icon d-flex flex-column">
+            <v-icon
+              class="ml-auto"
+              icon="mdi-chevron-double-down"
               size="x-large"
               color="accent"
               @click="scrollToNextSection"
             />
           </div>
-
         </div>
       </v-sheet>
     </div>
@@ -48,12 +36,12 @@
 <script setup lang="ts">
 import type { Hero } from '~/types/layout/Hero';
 defineProps<
-  Hero & { 
-    firstName: string; 
-    familyName: string; 
-    slogan: string; 
-    twitter: string; 
-    email: string; 
+  Hero & {
+    firstName: string;
+    familyName: string;
+    slogan: string;
+    twitter: string;
+    email: string;
     portrait: string;
     role: string;
   }
@@ -61,15 +49,13 @@ defineProps<
 
 const scrollToNextSection = () => {
   const nextSection = document.getElementById('about-section');
-  if (nextSection) 
-    nextSection.scrollIntoView({ behavior: 'smooth' });
-  else 
+  if (nextSection) nextSection.scrollIntoView({ behavior: 'smooth' });
+  else
     window.scrollTo({
       top: window.innerHeight * 0.85,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
 };
-
 </script>
 
 <style scoped>

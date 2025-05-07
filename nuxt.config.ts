@@ -77,7 +77,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: {
       name: 'page',
-      mode: 'out-in', // Ensures old page leaves before new page enters
+      mode: 'out-in',
     },
   },
 });

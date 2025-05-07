@@ -10,12 +10,48 @@
       <v-row>
         <v-col cols="12">
           <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
+            Senaste <span class="text-accent"> nytt</span>
+          </h2>
+        </v-col>
+
+        <v-col
+          v-for="({caption, url, source, tags, image}, i) in selectedPage?.newsItems"
+          :key="i"
+          cols="12"
+          sm="6"
+          md="4"
+          class="d-flex px-2"
+        >
+        
+        <NewsCard
+            :title="caption"
+            :caption="caption"
+            :image="image"
+            :url="url"
+            :tags="tags"
+            :source="source"
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-btn block :to="'/politik'" variant="tonal">
+            Läs om MED i media!
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
             Våra <span class="text-accent"> grundprinciper</span>
           </h2>
         </v-col>
 
         <v-col
-          v-for="(principle, i) in principles"
+          v-for="({title, subtitle, image}, i) in selectedPage?.coreValues"
           :key="i"
           cols="12"
           sm="6"
@@ -23,10 +59,9 @@
           class="d-flex px-2"
         >
           <CardCorePrinciple
-            :description="principle.description"
-            :title="principle.title"
-            :icon="principle.icon"
-            :image="principle.image"
+            :description="subtitle"
+            :title="title"
+            :image="image"
             class="flex-grow-1"
           />
         </v-col>
@@ -59,6 +94,7 @@ onBeforeMount(async () => {
   try {
     if(!selectedPage.value || selectedPage.value !== 'home')
       await pagesStore.fetchPage('home')
+    console.log(selectedPage.value)
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
   }
@@ -69,31 +105,10 @@ onMounted(async () =>
     await Promise.all([
       await memberStore.fetchPartyLeader(),
       await memberStore.fetchViceLeader(),
-      await memberStore.fetchSpokesPersons(),
+      // await memberStore.fetchSpokesPersons(),
     ])
   )
 )
-
-const principles = [
-  {
-    title: 'Frihet',
-    description: 'Individuell frihet, stopp på skatteslöseriet, minskad byråkrati',
-    icon: 'mdi-bird',
-    image: 'frihet.jpg',
-  },
-  {
-    title: 'Trygghet',
-    description: 'Stark rättsstat, ansvarsfull migrationspolitik och effektiv brottsbekämpning.',
-    icon: 'mdi-account-check',
-    image: 'trygghet.jpg',
-  },
-  {
-    title: 'Framtidstro',
-    description: 'Ekonomisk tillväxt, entreprnörskap, tron på individen',
-    icon: 'mdi-school',
-    image: 'framtidstro.jpg',
-  },
-];
 
 watch(
   () => selectedPage.value?.seo,

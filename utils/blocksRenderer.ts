@@ -11,7 +11,7 @@ import type {
 
 export const defaultComponents: ComponentsContextValue = {
   blocks: {
-    paragraph: (props) => h('p', { class: 'text-body-1' }, props.children),
+    paragraph: (props) => h('p', { style: 'font-size: 1.5rem' }, props.children),
     quote: (props) => h('blockquote', {}, props.children),
     code: (props) => h('pre', {}, [h('code', {}, props.plainText)]),
     heading: ({ level, children }) => {

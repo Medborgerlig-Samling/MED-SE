@@ -10,12 +10,7 @@
         <v-slide-y-transition mode="out-in">
           <div v-if="!showDetails">
             <div class="d-flex flex-wrap ga-6 pa-6">
-            <div>
-               💼 Ekonomi & Skatter
-              * Sänk skatterna med upp till 20% utan att kompromissa med kärnverksamheter som skola och vård.​
-              * Minska slöseri med skattemedel och avveckla onödiga myndigheter.​
-              * Främja företagande genom att sänka arbetsgivaravgifter och förenkla regelverk
-            </div>
+            <div/>
               <!-- <template v-for="subject in mainSubjects" :key="subject?.title">
                 <v-card width="300" color="primary" rounded="lg" flat @click="selectSubject(subject)">
                   <v-img

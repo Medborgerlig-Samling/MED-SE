@@ -13,6 +13,7 @@ export const usePagesStore = defineStore('pages', () => {
     const res = await fetch('/api/home');
     const json = await res.json();
     pages.value.set(page, json);
+
     selectedPage.value = pages.value.get(page);
   }
 

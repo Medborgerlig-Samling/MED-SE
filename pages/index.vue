@@ -6,95 +6,59 @@
       <v-spacer />
     </v-container>
 
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
-            Senaste <span class="text-accent"> nytt</span>
-          </h2>
-        </v-col>
+    <v-sheet rounded color="primary" class="px-12">
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <h2 class="text-lg-h2 text-md-h3 text-h4 font-weight-bold my-6 text-center text-white">
+              Våra <span class="text-accent"> grundprinciper</span>
+            </h2>
+          </v-col>
 
-        <v-col
-          v-for="({caption, url, source, tags, image}, i) in selectedPage?.newsItems"
-          :key="i"
-          cols="12"
-          sm="6"
-          md="4"
-          class="d-flex px-2"
-        >
-        
-        <NewsCard
-            :title="caption"
-            :caption="caption"
-            :image="image"
-            :url="url"
-            :tags="tags"
-            :source="source"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-btn block :to="'/politik'" variant="tonal">
-            Läs om MED i media!
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <v-container>
-      <v-row>
-        <v-col cols="12">
-          <h2 class="text-h4 font-weight-bold mb-6 text-center text-md-left">
-            Våra <span class="text-accent"> grundprinciper</span>
-          </h2>
-        </v-col>
-
-        <v-col
-          v-for="({title, subtitle, image}, i) in selectedPage?.coreValues"
-          :key="i"
-          cols="12"
-          sm="6"
-          md="4"
-          class="d-flex px-2"
-        >
-          <CardCorePrinciple
-            :description="subtitle"
-            :title="title"
-            :image="image"
-            class="flex-grow-1"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-btn block :to="'/politik'" variant="tonal">
-            Läs mer om vår politik
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+          <v-col
+            v-for="({ title, subtitle, image, lead, slug }, i) in selectedPage?.coreValues"
+            :key="i"
+            cols="12"
+            sm="12"
+            md="12"
+            lg="4"
+            class="d-flex px-2"
+          >
+            <div class="bg-white rounded-lg">
+              <CardCorePrinciple
+                :description="subtitle"
+                :title="title"
+                :lead="lead"
+                :image="image"
+                :slug="slug"
+                class="w-100 h-100"
+                :color="slug === 'framtidstro' ? 'primary' : slug === 'trygghet' ? 'accent' : 'green'"
+              />
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-btn block :to="'/politik'" flat variant="text"> Läs mer om vår politik </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
   </div>
 
 </template>
 
 <script setup lang="ts">
 
-import { useSeo } from '~/composables/useSeo';
-import { watch } from 'vue';
-const pagesStore = usePagesStore()
+const pagesStore = usePagesStore();
 const memberStore = useMemberStore();
-const { selectedPage } = storeToRefs(pagesStore)
-
-const seo = selectedPage?.seo || {};
+const { selectedPage } = storeToRefs(pagesStore);
 
 const layout = inject('layout')
 
 onBeforeMount(async () => {
   try {
-    if(!selectedPage.value || selectedPage.value !== 'home')
-      await pagesStore.fetchPage('home')
-    console.log(selectedPage.value)
+    if (!selectedPage.value || selectedPage.value !== 'home') await pagesStore.fetchPage('home');
   } catch (error) {
     console.error(error instanceof Error ? error.message : error);
   }
@@ -105,7 +69,6 @@ onMounted(async () =>
     await Promise.all([
       await memberStore.fetchPartyLeader(),
       await memberStore.fetchViceLeader(),
-      // await memberStore.fetchSpokesPersons(),
     ])
   )
 )
@@ -122,4 +85,6 @@ watch(
   },
   { immediate: true }
 );
+
+
 </script>

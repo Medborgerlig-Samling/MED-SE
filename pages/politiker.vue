@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-tabs v-model="activeTab" color="accent" center-active>
-      <v-tab :value="1" :to="`/partiet/${partyLeader?.slug || 'daniel_sonesson'}`">Ordförande</v-tab>
-      <v-tab :value="2" :to="`/partiet/${viceLeader?.slug || 'mikael_flink'}`">Vice ordförande</v-tab>
-      <v-tab :value="3" :to="`/partiet/talespersoner`">Talespersoner</v-tab>
+      <v-tab :value="1" :to="`/politiker/${partyLeader?.slug || 'daniel_sonesson'}`">Ordförande</v-tab>
+      <v-tab :value="2" :to="`/politiker/${viceLeader?.slug || 'mikael_flink'}`">Vice ordförande</v-tab>
+      <v-tab :value="3" :to="`/politiker/talespersoner`">Talespersoner</v-tab>
     </v-tabs>
 
     <Suspense>
@@ -28,24 +28,18 @@ const { partyLeader, viceLeader } = storeToRefs(memberStore);
 
 const routeToTabMap = computed(() => {
   const map: Record<string, number> = {
-    [`/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`]: 1,
-    [`/partiet/${viceLeader.value?.slug || 'mikael_flink'}`]: 2,
-    '/partiet/talespersoner': 3,
+    [`/politiker/${partyLeader.value?.slug || 'daniel_sonesson'}`]: 1,
+    [`/politiker/${viceLeader.value?.slug || 'mikael_flink'}`]: 2,
+    '/politiker/talespersoner': 3,
   };
 
   const slug = route.params.slug as string;
-  if (
-    slug &&
-    slug !== partyLeader.value?.slug &&
-    slug !== viceLeader.value?.slug &&
-    slug !== 'talespersoner'
-  ) {
+  if (slug && slug !== partyLeader.value?.slug && slug !== viceLeader.value?.slug && slug !== 'talespersoner') {
     map[route.path] = 3;
   }
 
   return map;
 });
-
 
 const activeTab = computed({
   get() {
@@ -66,17 +60,17 @@ const activeTab = computed({
 const pageKey = computed(() => route.path); // Use route.path for unique key
 
 function getTargetRoute(tab: number): string {
-  if (tab === 1) return `/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`;
-  if (tab === 2) return `/partiet/${viceLeader.value?.slug || 'mikael_flink'}`;
-  return '/partiet/talespersoner';
+  if (tab === 1) return `/politiker/${partyLeader.value?.slug || 'daniel_sonesson'}`;
+  if (tab === 2) return `/politiker/${viceLeader.value?.slug || 'mikael_flink'}`;
+  return '/politiker/talespersoner';
 }
 
 onMounted(async () => {
   if (!partyLeader.value) {
     await memberStore.fetchPartyLeader();
   }
-  if (route.path === '/partiet') {
-    await router.replace(`/partiet/${partyLeader.value?.slug || 'daniel_sonesson'}`);
+  if (route.path === '/politiker') {
+    await router.replace(`/politiker/${partyLeader.value?.slug || 'daniel_sonesson'}`);
   }
 });
 </script>

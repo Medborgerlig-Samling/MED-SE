@@ -27,6 +27,16 @@ const items = [
     to: '/politik',
   },
   {
+    title: 'Politiker',
+    to: '/politiker',
+  },
+  {
+    title: 'Aktuellt',
+    to: '/aktuellt',
+  },
+];
+
+const partiet =   {
     title: 'Partiet',
     menu: [
       { title: 'Om MED', to: '/partiet' },
@@ -34,8 +44,7 @@ const items = [
       { title: 'Ung och fri', to: '/ungochfri' },
       { title: 'Kontakt & Press', to: '/kontakt' },
     ],
-  },
-];
+  }
 </script>
 
 <style scoped>

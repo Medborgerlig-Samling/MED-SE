@@ -1,6 +1,6 @@
 export function transformSubject(data) {
   if (!data) return null;
-  const { title, subtitle, slug, image, lead_paragraph, text } = data;
+  const { title, subtitle, slug, image, lead_paragraph, goals, text, principles } = data;
 
   return {
     title,
@@ -8,6 +8,8 @@ export function transformSubject(data) {
     slug,
     image: image[0]?.url,
     lead_paragraph,
+    goals,
     text,
+    principles,
   };
 }

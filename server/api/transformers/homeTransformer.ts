@@ -30,30 +30,28 @@ interface HomeData {
   };
 }
 export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: string }) {
+<<<<<<< HEAD
 
   const { slug, hero, news_items, corevalues,  seo } = data;
 
+=======
+  const { slug, hero, corevalues } = data;
+  const desiredOrder = ['frihet', 'trygghet', 'framtidstro'];
+>>>>>>> 414d8de (fix: the rest)
 
-  return {
-    slug,
-    coreValues:
-      corevalues?.map((coreValue) => ({
+  const sortedCoreValues =
+    corevalues
+      ?.slice() // make a copy to avoid mutating original
+      .sort((a, b) => desiredOrder.indexOf(a.slug) - desiredOrder.indexOf(b.slug))
+      .map((coreValue) => ({
         title: coreValue.title,
         slug: coreValue.slug,
         subtitle: coreValue.subtitle,
-        image: coreValue.images[0].formats.small.url,
-      })) || [],
-    newsItems:
-      news_items?.map((newsItem) => ({
-        caption: newsItem.caption,
-        url: newsItem.url,
-        source: newsItem.source,
-        tags: newsItem.tags.map((tag) => ({
-          label: tag.label,
-          value: tag.value,
-        })),
-        image: newsItem.image?.formats?.small?.url,
-      })) || [],
+        lead: (coreValue as any).lead_paragraph, // in case `lead_paragraph` is not in the type
+      })) || [];
+  return {
+    slug,
+    coreValues: sortedCoreValues,
     hero: {
       title: hero.title,
       subtitle: hero.subtitle,
@@ -62,6 +60,7 @@ export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: 
         to: hero.CTA.value,
       },
       image: hero.image?.[0] ? hero.image[0].url : null,
+      images: hero.image?.map(({ url }) => url),
     },
     seo: {
       meta_title: seo.meta_title,

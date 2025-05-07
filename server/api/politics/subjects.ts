@@ -6,6 +6,7 @@ export default defineEventHandler(async () => {
   const collection = await client.collection('subjects');
   const subjects = await collection.find({
     populate: '*',
+    sort: 'order:asc',
   });
 
   console.dir({ subjects }, { depth: 5 });

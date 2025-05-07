@@ -5,10 +5,10 @@
       <h1 v-if="!lg" class="text-h3 font-weight-bold text-accent mb-4" color="secondary">Var en del av förändringen</h1>
       <span>
         <strong class="text-accent font-weight-bold">Bli medlem</strong> redan idag och var med att påverka Sverige i
-        rätt riktning.<br >
-        Fyll i medlemsansökan nedan och betala med betalkort.<br >
+        rätt riktning.<br />
+        Fyll i medlemsansökan nedan och betala med betalkort.<br />
         <strong>1.</strong> Fyll i medlemsansökan nedan Saknas fullständig information kan medlemskapet inte
-        registreras.<br >
+        registreras.<br />
         <strong> 2.</strong> Registrera ett betal- eller kreditkort Från 1 januari 2025 är medlemsavgiften 300 kr per
         år. För ungdomar som inte fyllt 21 år är avgiften 50 kr per år. En dragning sker direkt och sedan återkommande
         samma datum varje år.

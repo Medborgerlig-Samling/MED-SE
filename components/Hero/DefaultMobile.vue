@@ -20,7 +20,7 @@
         {{ CTA?.title }}
       </v-btn>
       <v-icon
-        class="down-icon
+        class="down-icon"
         icon="mdi-chevron-double-down"
         size="x-large"
         color="accent"

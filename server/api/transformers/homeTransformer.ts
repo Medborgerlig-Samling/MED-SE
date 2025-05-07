@@ -30,14 +30,9 @@ interface HomeData {
   };
 }
 export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: string }) {
-<<<<<<< HEAD
+  const { slug, hero, corevalues, seo } = data;
 
-  const { slug, hero, news_items, corevalues,  seo } = data;
-
-=======
-  const { slug, hero, corevalues } = data;
   const desiredOrder = ['frihet', 'trygghet', 'framtidstro'];
->>>>>>> 414d8de (fix: the rest)
 
   const sortedCoreValues =
     corevalues
@@ -66,6 +61,6 @@ export function transformHomeData({ data, baseUrl }: { data: HomeData; baseUrl: 
       meta_title: seo.meta_title,
       meta_description: seo.meta_description,
       ogImageUrl: seo.og_image?.[0] ? seo.og_image[0].url : null,
-    }
+    },
   };
 }

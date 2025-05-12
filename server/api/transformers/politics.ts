@@ -6,7 +6,7 @@ export function transformSubject(data) {
     title,
     subtitle,
     slug,
-    image: image[0]?.url,
+    image: image?.[0]?.url,
     lead_paragraph,
     goals,
     text,

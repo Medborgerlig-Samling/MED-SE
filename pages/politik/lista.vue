@@ -17,7 +17,7 @@
                     <div
                       class="h-25 d-flex flex-column align-center w-100 text-center text-pre-wrap justify-end mt-auto bg-overlay wrap"
                     >
-                      <h5 class="text-h5 text-break mt-auto font-weight-medium text-white">
+                      <h5 class="text-h5 text-break my-auto font-weight-medium text-white">
                         {{ title }}
                       </h5>
                     </div>

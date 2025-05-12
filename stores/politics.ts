@@ -1,5 +1,6 @@
 export const usePoliticsStore = defineStore('politics', () => {
   const subjects = ref([]);
+  const coreValues = ref([]);
   const subjectsBySlug = ref(new Map());
   const selectedSubject = ref(null);
 
@@ -23,11 +24,21 @@ export const usePoliticsStore = defineStore('politics', () => {
     return selectedSubject.value;
   }
 
+  async function fetchCoreValues() {
+    const res = await fetch('/api/corevalues/corevalues');
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+    coreValues.value = data;
+  }
+
   return {
     subjects,
     subjectsBySlug,
     selectedSubject,
+    coreValues,
     fetchSubjects,
     fetchSubjectBySlug,
+    fetchCoreValues,
   };
 });

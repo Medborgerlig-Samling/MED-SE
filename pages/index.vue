@@ -6,7 +6,7 @@
       <v-spacer />
     </v-container>
 
-    <v-sheet rounded color="primary" class="px-12">
+    <v-sheet rounded color="primary" class="px-md-12">
       <v-container>
         <v-row>
           <v-col cols="12">
@@ -37,24 +37,46 @@
             </div>
           </v-col>
         </v-row>
+
         <v-row>
           <v-col cols="12">
-            <v-btn block :to="'/politik'" flat variant="text"> Läs mer om vår politik </v-btn>
+            <v-btn block :to="'/politik'" flat variant="tonal"> Läs mer om vår politik </v-btn>
           </v-col>
         </v-row>
+        <v-divider class="my-6" />
+        <div v-if="layout === 'mobile'">
+          <h3 class="text-md-h3 text-h5 font-weight-bold mt-6 text-center text-white">
+            Prenumerera på Daniels nyhetsbrev
+          </h3>
+          <v-card-text class="text-md-h6 text-center text-white">
+            Få de senaste nyheterna om partiet och om svensk politik i direkt din inkorg</v-card-text
+          >
+          <FormNewsLetter class="w-100 bg-white rounded" />
+        </div>
+
+        <v-sheet v-else rounded class="pt-6">
+          <h3 class="text-md-h3 text-h5 font-weight-bold mt-6 text-center text-primary">
+            Prenumerera på Daniels nyhetsbrev
+          </h3>
+          <v-card-text class="text-md-h6 text-center text-primary">
+            Få de senaste nyheterna om partiet och om svensk politik i direkt din inkorg</v-card-text
+          >
+          <div v-if="layout === 'desktop'" class="d-flex justify-between">
+            <FormNewsLetter class="w-50 ml-12 mb-12" />
+            <v-img cover src="/Sonesson.png" />
+          </div>
+        </v-sheet>
       </v-container>
     </v-sheet>
   </div>
-
 </template>
 
 <script setup lang="ts">
-
 const pagesStore = usePagesStore();
 const memberStore = useMemberStore();
 const { selectedPage } = storeToRefs(pagesStore);
 
-const layout = inject('layout')
+const layout = inject('layout');
 
 onBeforeMount(async () => {
   try {
@@ -64,14 +86,9 @@ onBeforeMount(async () => {
   }
 });
 
-onMounted(async () => 
-  nextTick(async () => 
-    await Promise.all([
-      await memberStore.fetchPartyLeader(),
-      await memberStore.fetchViceLeader(),
-    ])
-  )
-)
+onMounted(async () =>
+  nextTick(async () => await Promise.all([await memberStore.fetchPartyLeader(), await memberStore.fetchViceLeader()])),
+);
 
 watch(
   () => selectedPage.value?.seo,
@@ -83,8 +100,6 @@ watch(
       ogImage: seo?.ogImageUrl,
     });
   },
-  { immediate: true }
+  { immediate: true },
 );
-
-
 </script>

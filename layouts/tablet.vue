@@ -27,23 +27,19 @@
 const expand = ref(false);
 const items = [
   {
-    title: 'Politik',
-    to: '/politik',
+    title: 'Vilka vi är',
+    to: '/politiker',
   },
   {
-    title: 'Politiker',
-    menu: [
-      { title: 'Om MED', to: '/partiet' },
-      { title: 'Distrikt och lokalföreningar', to: '/foreningar' },
-      { title: 'Ung och fri', to: '/ungochfri' },
-      { title: 'Kontakt & Press', to: '/kontakt' },
-    ],
+    title: 'Vad vi vill',
+    to: '/politik',
   },
   {
     title: 'Aktuellt',
     to: '/aktuellt',
   },
 ];
+
 </script>
 
 <style scoped>

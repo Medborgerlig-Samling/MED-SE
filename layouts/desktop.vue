@@ -23,12 +23,12 @@ const expand = ref(false);
 
 const items = [
   {
-    title: 'Politik',
-    to: '/politik',
+    title: 'Vilka vi är',
+    to: '/politiker',
   },
   {
-    title: 'Politiker',
-    to: '/politiker',
+    title: 'Vad vi vill',
+    to: '/politik',
   },
   {
     title: 'Aktuellt',

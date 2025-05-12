@@ -44,17 +44,16 @@ const expand = ref(false);
 
 const items = [
   {
-    title: 'Politik',
+    title: 'Vilka vi är',
+    to: '/politiker',
+  },
+  {
+    title: 'Vad vi vill',
     to: '/politik',
   },
   {
-    title: 'Partiet',
-    menu: [
-      { title: 'Om MED', to: '/partiet' },
-      { title: 'Distrikt och lokalföreningar', to: '/foreningar' },
-      { title: 'Ung och fri', to: '/ungochfri' },
-      { title: 'Kontakt & Press', to: '/kontakt' },
-    ],
+    title: 'Aktuellt',
+    to: '/aktuellt',
   },
 ];
 

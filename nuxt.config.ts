@@ -8,15 +8,7 @@ function vuetifyConfig(_options, nuxt) {
 export default defineNuxtConfig({
   ssr: true,
   modules: [vuetifyConfig, '@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/strapi', '@nuxtjs/device', '@unlok-co/nuxt-stripe'],
-  // '@dargmuesli/nuxt-cookie-control',
-  // cookieControl: {
-  //   closeModalOnClickOutside: true,
-  //   colors: {
-  //     barBackground: '#3E7DBB',
-  //     barButtonColor: 'red',
-  //   },
-  //   // typed module options
-  // },
+
   content: {
     experimental: {
       search: true,
@@ -50,14 +42,19 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     xBearerToken: process.env.X_BEARER_TOKEN,
+    civicrmApiKey: process.env.CIVICRM_API_KEY,
+    civicrmBaseUrl: process.env.CIVICRM_BASE_URL || 'https://api.example.com/civicrm/ajax/api4/',
     private: {
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+      stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+      
     },
     public: {
       xBearerToken: process.env.X_AUTH_TOKEN,
-      // stripe: {
-      //   key: process.env.STRIPE_PUBLISHABLE_KEY,
-      // },
+      civicrmBaseUrl: process.env.CIVICRM_BASE_URL, 
+      stripe: {
+        key: process.env.STRIPE_PUBLISHABLE_KEY,
+      },
       membership: {
         youthAnnual: process.env.STRIPE_TEST_YOUTH_ANNUAL,
         youthOneYear: process.env.STRIPE_TEST_YOUTH_ONE_YEAR,

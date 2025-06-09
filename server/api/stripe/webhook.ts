@@ -1,7 +1,7 @@
 import { defineEventHandler, getHeader, readRawBody, createError } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import Stripe from 'stripe';
-import { callCiviApi } from '../utils/civi-api'
+import { callCiviApi, getContactValues, getCiviMembershipValues } from '../utils/civi-api'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 );
@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const webhookSecret = config.private.stripeWebhookSecret; // Använd runtimeConfig för att hämta hemligheten
   // const civicrmRestUrl = 'https://mdl.med.se/index.php/civicrm/ajax/api4/';
   const civicrmRestUrl = 'https://wordpress-1218060-5067894.cloudwaysapps.com/index.php/civicrm/ajax/api4/';
-  const civicrmApiKey = '43pmj4FVODgN2TodZH6gLCBS'; // Ersätt med ditt faktiska API-nyckel
+  const civicrmApiKey = 'DH3fhjibiCjSDPUJDI5H7Ta5'; // Ersätt med ditt faktiska API-nyckel
 
   const sig = getHeader(event, 'stripe-signature');
   if (!sig) {
@@ -31,47 +31,74 @@ export default defineEventHandler(async (event) => {
       webhookSecret
     );
   } catch (err: any) {
-    console.log('webhook secret:', webhookSecret);
-    console.error('Webhook signature verification failed:', err.message);
+     console.error('Webhook signature verification failed:', err.message);
     throw createError({ statusCode: 400, statusMessage: `Webhook Error: ${err.message}` });
   }
 
-  // 👉 Hantera olika typer av events
+  // 👉 Hantera prenumerationer
   if (stripeEvent.type === 'invoice.payment_succeeded') {
     const invoice = stripeEvent.data.object as Stripe.Invoice;
+    const contactValues = await getContactValues(invoice, process.env.STRIPE_SECRET_KEY!);
 
-    const subscriptionId = invoice.subscription;
-    const customerId = invoice.customer;
-    // const amountPaid = invoice.amount_paid.toString().replace(/\D/g, '');
-    const cleaned = invoice.amount_paid.toString().replace(/[^\d.,]/g, '').replace(',', '.');
-    const numericAmount = parseFloat(cleaned);
-    const currency = invoice.currency;
-    const invoiceId = invoice.id;
-    const invoiceNumber = invoice.number;
-    const paymentIntentId = invoice.payment_intent;
+    console.log('Prenumerationsbetalning lyckades:', contactValues);
+
+    // const subscription_values = getCiviMembershipValues(invoice, process.env.STRIPE_SECRET_KEY!)
+    // console.log('Prenumerationsvärden: ', subscription_values);
+
+    //send to CiviCRM
+      const params = {
+        "values": {
+      
+        "contact_type": "Individual",
+        "display_name": `${contactValues.first_name} ${contactValues.last_name}`,
+        "first_name": contactValues.first_name,
+        "last_name": contactValues.last_name,
+        "sort_name": `${contactValues.last_name} ${contactValues.first_name}`,
+        "external_identifier": contactValues.external_identifier,
+        "legal_identifier": contactValues.legal_identifier,
+        "birth_date": contactValues.birth_date,
+        "phone": contactValues.phone,
+        "email" : contactValues.email,
+        "gender_id": 1, // 1 for
+        "Personnummer.Personnummer": contactValues.legal_identifier,
+        "preferred_language": "sv_SE",
+      }
+    };
+
+    // const result = await callCiviApi('Contact/create', params);
+    //  console.log('CiviCRM API response:', result);
+  
+
+  }
+
+  if (stripeEvent.type === 'invoice.payment_failed') {
+ 
    
-
-    // Hämta ev. extra info från customer eller subscription
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId as string);
-    const customer = await stripe.customers.retrieve(customerId as string);
-    const lastName = subscription?.metadata.lastName;
-    const firstName = subscription?.metadata.firstName;
-    const personalNumber = subscription?.metadata.personalNumber;
-    const postalCode = subscription?.metadata.postalCode;
-    const country = subscription?.metadata.country;
-    const phone = subscription?.metadata.phone;
-    const email = (customer as Stripe.Customer).email;
-    const name = (customer as Stripe.Customer).name;
-
-    console.log('✅ Betalning lyckades:');
-    console.log({
-      invoiceId,
-      invoiceNumber,
-      numericAmount,
-      subscriptionId,
+  }
+  
+  if (stripeEvent.type === 'payment_intent.succeeded' && false) {
+    // Om det är en engångsbetalning, hämta informationen från payment_intent
+    // och skapa en kontakt i CiviCRM
+    const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent;
+    const customerId = paymentIntent.customer;
+    const amount = paymentIntent.amount_received;
+    const currency = paymentIntent.currency;
+    const paymentIntentId = paymentIntent.id;
+    const email = paymentIntent.receipt_email || '';
+    const name = paymentIntent.metadata.name || '';
+    const firstName = paymentIntent.metadata.firstName || '';
+    const lastName = paymentIntent.metadata.lastName || '';
+    const personalNumber = paymentIntent.metadata.personalNumber || '';
+    const postalCode = paymentIntent.metadata.postalCode || '';
+    const country = paymentIntent.metadata.country || '';
+    const phone = paymentIntent.metadata.phone || '';
+    console.log('Engångsbetalning information:', {
       paymentIntentId,
       customerId,
+      amount,
+      currency,
       email,
+      name,
       firstName,
       lastName,
       personalNumber,
@@ -79,45 +106,10 @@ export default defineEventHandler(async (event) => {
       country,
       phone
     });
-  
-    //send to CiviCRM
-    try {
-        await fetch(civicrmRestUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          key: civicrmApiKey,
-          api_key: civicrmApiKey,
-          entity: 'Contact',
-          action: 'create',
-          json: JSON.stringify({
-            contact_type: 'Individual',
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone: phone,
-            custom_1: personalNumber, // Om du har ett anpassat fält
-            postal_code: postalCode,
-            country: country
-          })
-        })
-        });
-      } catch (error) {
-        console.error('❌ Misslyckades med att skapa kontakt i CiviCRM:', error);
-        throw createError({ statusCode: 500, statusMessage: 'Failed to create contact in CiviCRM' });
-      }
-
+    // Skicka informationen till CiviCRM
+    // Här kan du lägga till logik för att hantera engångsbetalningen, t.ex. skapa en kontakt i CiviCRM
   }
 
-  if (stripeEvent.type === 'invoice.payment_failed') {
-    const contacts = await callCiviApi('Contact', 'get', {
-      where: [['last_name', '=', 'Bergvall']],
-      limit: 25
-    })
-
-    console.log(contacts)
-   
-  }
   // Alltid svara med 200 OK om webhook hanterades
   return { received: true };
 });

@@ -8,7 +8,15 @@ function vuetifyConfig(_options, nuxt) {
 export default defineNuxtConfig({
   ssr: true,
   modules: [vuetifyConfig, '@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/strapi', '@nuxtjs/device', '@unlok-co/nuxt-stripe'],
-
+  // '@dargmuesli/nuxt-cookie-control',
+  // cookieControl: {
+  //   closeModalOnClickOutside: true,
+  //   colors: {
+  //     barBackground: '#3E7DBB',
+  //     barButtonColor: 'red',
+  //   },
+  //   // typed module options
+  // },
   content: {
     experimental: {
       search: true,

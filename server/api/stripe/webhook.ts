@@ -9,9 +9,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const webhookSecret = config.private.stripeWebhookSecret; // Använd runtimeConfig för att hämta hemligheten
-  // const civicrmRestUrl = 'https://mdl.med.se/index.php/civicrm/ajax/api4/';
-  const civicrmRestUrl = 'https://wordpress-1218060-5067894.cloudwaysapps.com/index.php/civicrm/ajax/api4/';
-  const civicrmApiKey = 'DH3fhjibiCjSDPUJDI5H7Ta5'; // Ersätt med ditt faktiska API-nyckel
+  const civicrmApiKey = config.civicrmApiKey; // Använd runtimeConfig för att hämta CiviCRM API-nyckeln
+  const civicrmRestUrl = config.public.civicrmBaseUrl; // Använd runtimeConfig för att hämta CiviCRM bas-URL
 
   const sig = getHeader(event, 'stripe-signature');
   if (!sig) {

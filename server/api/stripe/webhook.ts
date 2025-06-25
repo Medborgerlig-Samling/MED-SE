@@ -1,7 +1,7 @@
 import { defineEventHandler, getHeader, readRawBody, createError } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import Stripe from 'stripe';
-import { callCiviApi, getContactValues, getCiviMembershipValues } from '../utils/civi-api'
+import { callCiviApi, getContactValues, getCiviMembershipValues, getSubscriptionsStatus } from '../utils/civi-api'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 );
@@ -43,6 +43,18 @@ export default defineEventHandler(async (event) => {
 
     // const subscription_values = getCiviMembershipValues(invoice, process.env.STRIPE_SECRET_KEY!)
     // console.log('Prenumerationsvärden: ', subscription_values);
+
+
+    // Main Flow
+
+    // Kontrollera om prenumeration finns och är aktiv
+    if (await getSubscriptionsStatus(contactValues.external_identifier)) {
+      console.log('Prenumeration är aktiv, ingen åtgärd krävs.');
+    } else {
+      // Om prenumerationen inte är aktiv, skapa en ny kontakt i CiviCRM
+      console.log('Prenumeration är inte aktiv, skapar kontakt i CiviCRM...');
+    }
+
 
     //send to CiviCRM
       const params = {

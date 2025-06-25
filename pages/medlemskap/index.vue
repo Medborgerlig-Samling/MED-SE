@@ -150,7 +150,6 @@ const handleSubmit = async () => {
     });
 
     // const data = await res.json();
-    // clientSecret = data.clientSecret;
     if (!res.ok) {
       const errorText = await res.text();
       console.error('Något gick fel med fetch:', errorText);
@@ -170,14 +169,6 @@ const handleSubmit = async () => {
     console.log('Prenumeration skapad:', data);
     alert('Prenumerationen har skapats!');
 
-
-    // Bekräfta prenumeration
-    // const result = await stripe.value.confirmCardPayment(clientSecret);
-    // if (result.error) {
-    //   alert(`Fel vid betalning: ${result.error.message}`);
-    // } else {
-    //   alert('Prenumeration skapad och betalning genomförd!');
-    // } 
   } else {
     const res = await fetch('/api/stripe/initiate-payment', {
       method: 'POST',
@@ -207,8 +198,6 @@ const handleSubmit = async () => {
   }
   }
 
-  
-  
 };
 
 </script>

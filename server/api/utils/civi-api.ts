@@ -35,7 +35,7 @@ export async function callCiviApi(endpoint: string, params: any) {
 }
 
 export async function getContactValues(invoice: Stripe.Invoice, stripeSecretKey: string){
-  const subscriptionId = invoice.subscription;
+  const subscriptionId = invoice.subscription || ''
   const customerId = invoice.customer;
   const cleaned = invoice.amount_paid.toString().replace(/[^\d.,]/g, '').replace(',', '.');
   const numericAmount = parseFloat(cleaned);
@@ -66,7 +66,7 @@ export async function getContactValues(invoice: Stripe.Invoice, stripeSecretKey:
     display_name: `${firstName} ${lastName}`,
     sort_name: `${lastName} ${firstName}`,
     preferred_language: 'sv_SE',
-    external_identifier: subscriptionId,
+    external_identifier: subscriptionId.toString(),
     legal_identifier: personalNumber,
     birth_date: personalNumber ? personalNumber.slice(0, 4) + '-' + personalNumber.slice(4,6) + '-' +personalNumber.slice(6,8): '', // Assuming personal number is in YYYY-MM-DD format
     phone: phone,
@@ -92,3 +92,36 @@ export async function getCiviMembershipValues(invoice: Stripe.Invoice, stripeSec
     membership_end_date: membershipEndDate,
   };
 }
+
+  /**
+   * Retrieves the subscription status from CiviCRM where the subscription source field equals the provided value.
+   * @param externalIdentifier - The external identifier (Stripe Subscription) to match in CiviCRM.
+   * @returns True if the subscription is active, otherwise false.
+   */
+  export async function getSubscriptionsStatus(externalIdentifier: string) {
+    // Replace with your actual API call logic and field names
+    const params = {
+      "where": [["source", "=", "sub_1PdA5CG42EnKwdfecyxqCAho"]], // replace with externalIdentifier
+      "limit": 1 ,
+    };
+
+    try {
+      const result = await callCiviApi('Membership/get', params);
+      console.log('CiviCRM API response:', result);
+      if (result && result.values && result.values.length > 0) {
+        // Check for active membership/subscription status in the returned contact
+        const membership = result.values[0];
+        // You may need to adjust this logic based on your CiviCRM schema
+        return membership.status_id === '2';
+      }
+      return false;
+    } catch (error) {
+      console.error('Error fetching subscription status from CiviCRM:', error);
+      return false;
+    }
+  }
+
+
+
+
+

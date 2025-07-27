@@ -29,17 +29,18 @@
         </v-col>
 
         <v-col cols="12" sm="6" md="3">
-          <v-text-field v-model="form.country" label="Land" :rules="[required]" />
+          <v-text-field v-model="form.city" label="Kommun" :rules="[required]" />
         </v-col>
 
         <v-col cols="12" sm="6" md="4">
           <v-text-field v-model="form.email" label="E-post" :rules="[required, isEmail]" />
         </v-col>
 
-        <v-col cols="6" sm="6" md="4">
+        <v-col cols="12" sm="6" md="4">
           <v-text-field v-model="form.phone" label="Telefonnummer" :rules="[required]" />
         </v-col>
 
+       
       <v-col cols="12" sm="12" md="4">
         <v-radio-group
           v-model="form.paymentType"
@@ -90,10 +91,10 @@ const form = ref({
   lastName: 'Bond',
   personalNumber: '195201010101',
   postalCode: '187 70',
-  country: 'Sweden',
   email: 'james@bond.com',
-  phone: '007 0070007',
+  phone: '070 123 45 67',
   paymentType: 'subscription',
+  city: 'Stockholm',
 });
 
 const required = (v: string) => !!v || 'Obligatoriskt fält';

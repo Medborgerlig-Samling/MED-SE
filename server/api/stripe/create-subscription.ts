@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     country,
     personalNumber,
     paymentMethodId,
+    city,
     priceId = process.env.STRIPE_DEFAULT_PRICE_ID, // ditt price-id
   } = body;
 
@@ -48,6 +49,7 @@ export default defineEventHandler(async (event) => {
             postalCode,
             country,
             personalNumber,
+            city,
         },
     });
 
@@ -76,7 +78,7 @@ export default defineEventHandler(async (event) => {
 });
 
 // This code checks status of Payment Intent.
-async function kontrolleraPaymentIntentStatus(paymentIntentId) {
+async function kontrolleraPaymentIntentStatus(paymentIntentId: string) {
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     console.log(`PaymentIntent ID: ${paymentIntent.id}`);

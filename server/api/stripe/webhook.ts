@@ -1,7 +1,7 @@
 import { defineEventHandler, getHeader, readRawBody, createError } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import Stripe from 'stripe';
-import { callCiviApi, getContactValues, getCiviMembershipValues, getSubscriptionsStatus } from '../utils/civi-api'
+import { callCiviApi, getContactValues, getCiviMembershipValues, getSubscriptionsStatus, formatContactInfo, getContactByEmailPhoneOrLegalIdentifier, createContactInCiviCRM } from '../utils/civi-api'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 );
@@ -38,8 +38,10 @@ export default defineEventHandler(async (event) => {
   if (stripeEvent.type === 'invoice.payment_succeeded') {
     const invoice = stripeEvent.data.object as Stripe.Invoice;
     const contactValues = await getContactValues(invoice, process.env.STRIPE_SECRET_KEY!);
+    const formattedContactInfo = formatContactInfo(contactValues);
 
-    console.log('Prenumerationsbetalning lyckades:', contactValues);
+    // 
+    console.info('Prenumerationsbetalning lyckades:', formattedContactInfo);
 
     // const subscription_values = getCiviMembershipValues(invoice, process.env.STRIPE_SECRET_KEY!)
     // console.log('Prenumerationsvärden: ', subscription_values);
@@ -48,38 +50,23 @@ export default defineEventHandler(async (event) => {
     // Main Flow
 
     // Kontrollera om prenumeration finns och är aktiv
-    if (await getSubscriptionsStatus(contactValues.external_identifier)) {
-      console.log('Prenumeration är aktiv, ingen åtgärd krävs.');
+    if (await getSubscriptionsStatus(formattedContactInfo.external_identifier)) {
+      console.info('Prenumeration är aktiv, ingen åtgärd krävs.');
     } else {
       // Om prenumerationen inte är aktiv, skapa en ny kontakt i CiviCRM
-      console.log('Prenumeration är inte aktiv, skapar kontakt i CiviCRM...');
+      console.info('Prenumeration är inte aktiv, söker kontakt i CiviCRM...');
+      const contactID = await getContactByEmailPhoneOrLegalIdentifier(formattedContactInfo.email, formattedContactInfo.phone, formattedContactInfo.legal_identifier);
+      if (contactID) {
+        console.info(`Kontakt med ID ${contactID} finns redan i CiviCRM.`);
+      }
+      else {
+        console.info('Skapar ny kontakt i CiviCRM...');
+        await createContactInCiviCRM(formattedContactInfo);
+      }
     }
 
 
-    //send to CiviCRM
-      const params = {
-        "values": {
-      
-        "contact_type": "Individual",
-        "display_name": `${contactValues.first_name} ${contactValues.last_name}`,
-        "first_name": contactValues.first_name,
-        "last_name": contactValues.last_name,
-        "sort_name": `${contactValues.last_name} ${contactValues.first_name}`,
-        "external_identifier": contactValues.external_identifier,
-        "legal_identifier": contactValues.legal_identifier,
-        "birth_date": contactValues.birth_date,
-        "phone": contactValues.phone,
-        "email" : contactValues.email,
-        "gender_id": 1, // 1 for
-        "Personnummer.Personnummer": contactValues.legal_identifier,
-        "preferred_language": "sv_SE",
-      }
-    };
-
-    // const result = await callCiviApi('Contact/create', params);
-    //  console.log('CiviCRM API response:', result);
   
-
   }
 
   if (stripeEvent.type === 'invoice.payment_failed') {
@@ -124,3 +111,4 @@ export default defineEventHandler(async (event) => {
   // Alltid svara med 200 OK om webhook hanterades
   return { received: true };
 });
+

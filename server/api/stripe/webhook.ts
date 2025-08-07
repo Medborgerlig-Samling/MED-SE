@@ -1,7 +1,10 @@
 import { defineEventHandler, getHeader, readRawBody, createError } from 'h3';
 import { useRuntimeConfig } from '#imports';
 import Stripe from 'stripe';
-import { callCiviApi, getContactValues, getCiviMembershipValues, getSubscriptionsStatus, formatContactInfo, getContactByEmailPhoneOrLegalIdentifier, createContactInCiviCRM } from '../utils/civi-api'
+import { callCiviApi, getContactValues, getCiviMembershipValues, getSubscriptionsStatus, getContactByEmailPhoneOrLegalIdentifier, 
+  createContactInCiviCRM , registerContribution, updateContactInCiviCRM, updateMembershipInCiviCRM, getContactBySubscriptionId} from '../utils/civi-api'
+// import { getStadsdel } from '../utils/address';
+import {ContactValues} from './types';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!,
 );
@@ -37,12 +40,11 @@ export default defineEventHandler(async (event) => {
   // 👉 Hantera prenumerationer
   if (stripeEvent.type === 'invoice.payment_succeeded') {
     const invoice = stripeEvent.data.object as Stripe.Invoice;
-    const contactValues = await getContactValues(invoice, process.env.STRIPE_SECRET_KEY!);
-    const formattedContactInfo = formatContactInfo(contactValues);
-
-    // 
-    console.info('Prenumerationsbetalning lyckades:', formattedContactInfo);
-
+    const contactValues : ContactValues = await getContactValues(invoice, process.env.STRIPE_SECRET_KEY!);
+    // Get the amount from the invoice
+    const amount = invoice.amount_paid / 100; // Omvandlar från cent till kronor
+    // console.info(`Prenumeration betalad: ${amount} SEK för kontakt med e-post ${contactValues.email}`);
+ 
     // const subscription_values = getCiviMembershipValues(invoice, process.env.STRIPE_SECRET_KEY!)
     // console.log('Prenumerationsvärden: ', subscription_values);
 
@@ -50,22 +52,27 @@ export default defineEventHandler(async (event) => {
     // Main Flow
 
     // Kontrollera om prenumeration finns och är aktiv
-    if (await getSubscriptionsStatus(formattedContactInfo.external_identifier)) {
-      console.info('Prenumeration är aktiv, ingen åtgärd krävs.');
-    } else {
+    if (await getSubscriptionsStatus(contactValues.subscription_id)) {
+      console.info('Prenumeration är aktiv, Den förlängs med ett år.');
+      updateMembershipInCiviCRM(contactValues);
+      const contactID = await getContactBySubscriptionId(contactValues.subscription_id);
+      registerContribution(contactID , amount); 
+    } else if (false) {
       // Om prenumerationen inte är aktiv, skapa en ny kontakt i CiviCRM
       console.info('Prenumeration är inte aktiv, söker kontakt i CiviCRM...');
-      const contactID = await getContactByEmailPhoneOrLegalIdentifier(formattedContactInfo.email, formattedContactInfo.phone, formattedContactInfo.legal_identifier);
+      const contactID = await getContactByEmailPhoneOrLegalIdentifier(contactValues.email, contactValues.phone, contactValues.legal_identifier);
       if (contactID) {
-        console.info(`Kontakt med ID ${contactID} finns redan i CiviCRM.`);
+        console.info(`Kontakt med ID ${contactID} finns redan i CiviCRM. Uppdatering av adresser och registrering av bidrag...`);
+        // Uppdatera kontaktinformation i CiviCRM
+        updateContactInCiviCRM(contactID, contactValues);
+        updateMembershipInCiviCRM(contactValues);
+        registerContribution(contactID, amount); 
       }
       else {
         console.info('Skapar ny kontakt i CiviCRM...');
-        await createContactInCiviCRM(formattedContactInfo);
+        await createContactInCiviCRM(contactValues);
       }
     }
-
-
   
   }
 

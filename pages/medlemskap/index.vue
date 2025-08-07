@@ -88,11 +88,11 @@ const cardContainer = ref<HTMLElement|null>(null);
 const valid = ref(false);
 const form = ref({
   firstName: 'James',
-  lastName: 'Bond',
-  personalNumber: '195201010101',
-  postalCode: '187 70',
-  email: 'james@bond.com',
-  phone: '070 123 45 67',
+  lastName: 'Bonde',
+  personalNumber: '195201010102',
+  postalCode: '123 45',
+  email: 'james@bonde.com',
+  phone: '070 123 45 01',
   paymentType: 'subscription',
   city: 'Stockholm',
 });

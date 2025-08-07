@@ -1,4 +1,6 @@
-export function getStadsdel(postal_code: string | number): string {
+import {callCiviApi} from './civi-api';
+
+export function get_voting_district(postal_code: string | number): string {
   // Se till att postnummer är en sträng och trimma eventuella mellanslag i början/slutet
   let cleaned_postal_code = String(postal_code || '').trim();
 
@@ -80,4 +82,27 @@ export function getStadsdel(postal_code: string | number): string {
   }
 
   return 'None'; // Numret ligger inte inom något av intervallen
+}
+
+
+// services/addressService.js
+export async function getProvince(municipality:string): Promise<string> {
+  const url = '/Address/get';
+  const params = {
+    select: ['state_province_id', 'COUNT(id) AS count'],
+    where: [['supplemental_address_3', '=', municipality], ['state_province_id', 'IS NOT NULL']],
+    limit: 25,
+    groupBy: ['state_province_id'],
+  };
+
+  try {
+    const response = await callCiviApi(url, params);
+
+    const address = response.values?.flat() || [];
+    const province = address.length > 0 ? address[0].state_province_id : '0';
+    return province;
+  } catch (error) {
+    console.error('API error:', error);
+    return '0';
+  }
 }

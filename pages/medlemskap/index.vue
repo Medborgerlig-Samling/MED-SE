@@ -28,10 +28,6 @@
           <v-text-field v-model="form.postalCode" label="Postnummer" :rules="[required]" />
         </v-col>
 
-        <v-col cols="12" sm="6" md="3">
-          <v-text-field v-model="form.city" label="Kommun" :rules="[required]" />
-        </v-col>
-
         <v-col cols="12" sm="6" md="4">
           <v-text-field v-model="form.email" label="E-post" :rules="[required, isEmail]" />
         </v-col>
@@ -72,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import { loadStripe } from '@stripe/stripe-js';
 import type { Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
 
@@ -87,14 +83,13 @@ const cardContainer = ref<HTMLElement|null>(null);
 
 const valid = ref(false);
 const form = ref({
-  firstName: 'James',
-  lastName: 'Bonde',
-  personalNumber: '195201010102',
-  postalCode: '123 45',
-  email: 'james@bonde.com',
-  phone: '070 123 45 01',
+  firstName: '',
+  lastName: '',
+  personalNumber: '',
+  postalCode: '',
+  email: '',
+  phone: '',
   paymentType: 'subscription',
-  city: 'Stockholm',
 });
 
 const required = (v: string) => !!v || 'Obligatoriskt fält';
@@ -109,7 +104,8 @@ onMounted(async () => {
   elements.value = stripe.value.elements();
   stripeCardElement.value = elements.value.create('card');
 
-  // Montera i rätt container
+  // Mount card-element in DOM
+  await nextTick(); // Wait for DOM to update
   if (cardContainer.value && stripeCardElement.value) {
     stripeCardElement.value.mount(cardContainer.value);
   }
@@ -140,7 +136,6 @@ const handleSubmit = async () => {
   let clientSecret = '';
 
   if (form.value.paymentType === 'subscription') {
-    // alert('Skapar prenumeration...');
     const res = await fetch('/api/stripe/create-subscription', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

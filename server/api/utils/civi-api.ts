@@ -2,7 +2,7 @@
 // This file contains utility functions to interact with the CiviCRM API
 import Stripe from 'stripe'
 import createSubscription from '../stripe/create-subscription';
-import { get_voting_district, getProvince } from './address';
+import { get_voting_district, getProvince, getCityAndMunicipality } from './address';
 import {ContactValues} from '../stripe/types';
 
 // server/utils/callCiviApi.ts
@@ -31,8 +31,8 @@ export async function callCiviApi(endpoint: string, params: any) {
   try {
     return JSON.parse(text);
   } catch (err) {
-    console.error('CiviCRM-svar är inte giltig JSON:', text);
-    throw new Error('Ogiltigt svar från CiviCRM');
+    console.error('CiviCRM-response incorrect JSON:', text);
+    throw new Error('Error in CiviCRM response');
   }
 }
 
@@ -55,17 +55,24 @@ export async function getContactValues(invoice: Stripe.Invoice, stripeSecretKey:
   const lastName = subscription?.metadata.lastName || '';
   const personalNumber = subscription?.metadata.personalNumber || '';
   const postalCode = subscription?.metadata.postalCode || '';
-  const municipality = subscription?.metadata.city || '';
+  // const municipality = subscription?.metadata.city || '';
   const phone = subscription?.metadata.phone || '';
   const email = (customer as Stripe.Customer).email || '';
   const name = (customer as Stripe.Customer).name || '';
   
 
   const voting_district = get_voting_district(postalCode);
-  const province = await getProvince(municipality);
-  // Bygg contact-object för CiviCRM
+  // const province = await getProvince(municipality);
+
+  const cityAndMunicipality = await getCityAndMunicipality(postalCode);
+  const city = cityAndMunicipality.city || 'Odefinierat';
+  const municipality = cityAndMunicipality.municipality || 'Odefinierat';
+  const province = cityAndMunicipality.province || 'Odefinierat';
+  console.info('City:', city, 'Municipality:', municipality, 'Province:', province);
+
+  // Define the contact values object
   const values :ContactValues = {
-    id: 0, // CiviCRM kommer att generera ett ID
+    id: 0, // CiviCRM will create a new contact, so we start with 0
     customer_id: customerId as string,
     email: email,
     phone: phone,
@@ -76,26 +83,26 @@ export async function getContactValues(invoice: Stripe.Invoice, stripeSecretKey:
     birth_date: personalNumber ? personalNumber.slice(0, 4) + '-' + personalNumber.slice(4,6) + '-' +personalNumber.slice(6,8): '', // Assuming personal number is in YYYYMMDD format
     postal_code: format_post_code(postalCode),
     country_id: format_post_code(postalCode) != '' ? 1204 : 0, // Assuming Sweden is the only country with postal codes, otherwise set to 0
-    city: 'Odefinierat', // Placeholder, can be left undefined
+    city: 'Odefinierat', // Unknown as not being collected in form
     subscription_id: String(subscriptionId),
     preferred_language: 'sv_SE', // Assuming Swedish as default language
-    state_province_id: province, // Optional, can be left undefined
+    // state_province_id: province, // region ID from getProvince function
     voting_district: voting_district, // valkrets
-    municipality: municipality, // Optional, can be left undefined
+    municipality: municipality, // Selected municipality
     // Additional fields for CiviCRM
   }
   
-    // Formatera telefonnummer till "### ### ## ##"
+    // Format phone number as "### ### ## ##"
   if (values.phone) {
-    const phoneDigits = values.phone.replace(/\D/g, ''); // Ta bort allt utom siffror
+    const phoneDigits = values.phone.replace(/\D/g, ''); // remove all non-digit characters
     if (phoneDigits.length === 10) {
       values.phone = `${phoneDigits.substring(0, 3)} ${phoneDigits.substring(3, 6)} ${phoneDigits.substring(6, 8)} ${phoneDigits.substring(8, 10)}`;
     }
   }
 
-  // Formatera legal_identifier till "YYYYMMDD-####"
+  // Format legal_identifier as "YYYYMMDD-####"
   if (values.legal_identifier) {
-    const identifierDigits = values.legal_identifier.replace(/\D/g, ''); // Ta bort allt utom siffror
+    const identifierDigits = values.legal_identifier.replace(/\D/g, ''); // Remove all non-digit characters
     if (identifierDigits.length === 12) {
       values.legal_identifier = `${identifierDigits.substring(0, 8)}-${identifierDigits.substring(8, 12)}`;
     }
@@ -307,13 +314,13 @@ export async function createContactInCiviCRM(contactValues: ContactValues) {
 }
 
  function format_post_code(pnr: string) : string{
-  // Ta bort alla icke-siffror
+  // Remove all non-digit characters
   let digits = pnr.replace(/\D/g, '');
 
-  // Begränsa till 5 siffror
+  // Limit to 5 digits
   digits = digits.substring(0, 5);
 
-  // Lägg in mellanslag efter tre siffror om möjligt
+  // Add a space after the first 3 digits if there are more than 3 digits
   if (digits.length > 3) {
     pnr = digits.slice(0, 3) + ' ' + digits.slice(3);
   } else {
@@ -477,3 +484,4 @@ export async function updateMembershipInCiviCRM(contactValues: ContactValues) {
     throw error;
   }
 }
+

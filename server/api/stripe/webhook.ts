@@ -84,6 +84,7 @@ export default defineEventHandler(async (event) => {
   if (stripeEvent.type === 'payment_intent.succeeded' && false) {
     // Om det är en engångsbetalning, hämta informationen från payment_intent
     // och skapa en kontakt i CiviCRM
+    // OBS: denna kommer nog inte att användas
     const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent;
     const customerId = paymentIntent.customer;
     const amount = paymentIntent.amount_received;

@@ -106,3 +106,32 @@ export async function getProvince(municipality:string): Promise<string> {
     return '0';
   }
 }
+
+
+// Function to get city and municipality from postal code using REST API
+export async function getCityAndMunicipality(postal_code: string): Promise<{ city: string; municipality: string; province: string }> {
+  // remove all non-digit characters from postal_code
+  postal_code = postal_code.replace(/\D/g, '');
+  const url = `https://api.papapi.se/lite/?query={postal_code}&format=json&apikey={process.env.PAPAPI_KEY}`.replace('{postal_code}', postal_code).replace('{process.env.PAPAPI_KEY}', process.env.PAPAPI_KEY || '');
+  // console.log('Fetching city and municipality for postal code:', postal_code);
+  // console.info('API URL:', url);
+  try {
+    const response = await fetch(url) ;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }   
+    // console.info('API response:', response);
+    const data = await response.json();
+    const result = data.results[0];
+    const city = result.city;
+    const municipality = result.county;
+    const province = result.state;
+
+    console.info('City:', city, 'Municipality:', municipality, 'Province:', province);
+    return {city,municipality, province};
+      
+  } catch (error) {
+    console.error('API error:', error);
+    return { city: '', municipality: '', province: '' };
+  }
+}

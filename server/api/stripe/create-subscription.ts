@@ -17,25 +17,25 @@ export default defineEventHandler(async (event) => {
     personalNumber,
     paymentMethodId,
     city,
-    priceId = process.env.STRIPE_DEFAULT_PRICE_ID, // ditt price-id
+    priceId = process.env.STRIPE_DEFAULT_PRICE_ID, //  price-id
   } = body;
 
 
 
 
   try {
-    // 1. Skapa kund
+    // 1. Create customer
     const customer = await stripe.customers.create({
       name: `${firstName} ${lastName}`,
       email,
       phone,
-      payment_method: paymentMethodId, // behövs för att skapa direkt med prenumeration
+      payment_method: paymentMethodId, 
       invoice_settings: {
         default_payment_method: paymentMethodId,
       },
     });
 
-    // 2. Skapa prenumeration
+    // 2. Create subscription
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: priceId }],
@@ -78,41 +78,40 @@ export default defineEventHandler(async (event) => {
 });
 
 // This code checks status of Payment Intent.
-async function kontrolleraPaymentIntentStatus(paymentIntentId: string) {
-  try {
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    console.log(`PaymentIntent ID: ${paymentIntent.id}`);
-    console.log(`PaymentIntent Status: ${paymentIntent.status}`);
+// async function kontrolleraPaymentIntentStatus(paymentIntentId: string) {
+//   try {
+//     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+//     console.log(`PaymentIntent ID: ${paymentIntent.id}`);
+//     console.log(`PaymentIntent Status: ${paymentIntent.status}`);
 
-    // Här kan du lägga till din logik baserat på statusen
-    if (paymentIntent.status === 'succeeded') {
-      console.log('Betalningen lyckades!');
-      // Utför åtgärder efter lyckad betalning (t.ex. uppdatera databasen, skicka bekräftelsemail)
-    } else if (paymentIntent.status === 'processing') {
-      console.log('Betalningen bearbetas fortfarande.');
-      // Hantera fall där betalningen fortfarande bearbetas
-    } else if (paymentIntent.status === 'requires_payment_method') {
-      console.log('Betalningen misslyckades eftersom en betalningsmetod krävs.');
-      // Informera användaren om att de behöver ange en betalningsmetod
-    } else if (paymentIntent.status === 'requires_confirmation') {
-      console.log('Betalningen kräver bekräftelse.');
-      // I vissa fall kan ytterligare bekräftelse krävas
-    } else if (paymentIntent.status === 'canceled') {
-      console.log('Betalningen har blivit avbruten.');
-      // Hantera fall där betalningen har avbrutits
-    } else if (paymentIntent.status === 'requires_action') {
-      console.log('Ytterligare åtgärd krävs för betalningen (t.ex. 3D Secure).');
-      // Hantera omdirigeringar eller andra åtgärder som krävs
-    } else {
-      console.log(`Okänd PaymentIntent-status: ${paymentIntent.status}`);
-      // Hantera okända statusar
-    }
+//     // Här kan du lägga till din logik baserat på statusen
+//     if (paymentIntent.status === 'succeeded') {
+//       console.log('Betalningen lyckades!');
+//       // Utför åtgärder efter lyckad betalning (t.ex. uppdatera databasen, skicka bekräftelsemail)
+//     } else if (paymentIntent.status === 'processing') {
+//       console.log('Betalningen bearbetas fortfarande.');
+//       // Hantera fall där betalningen fortfarande bearbetas
+//     } else if (paymentIntent.status === 'requires_payment_method') {
+//       console.log('Betalningen misslyckades eftersom en betalningsmetod krävs.');
+//       // Informera användaren om att de behöver ange en betalningsmetod
+//     } else if (paymentIntent.status === 'requires_confirmation') {
+//       console.log('Betalningen kräver bekräftelse.');
+//       // I vissa fall kan ytterligare bekräftelse krävas
+//     } else if (paymentIntent.status === 'canceled') {
+//       console.log('Betalningen har blivit avbruten.');
+//       // Hantera fall där betalningen har avbrutits
+//     } else if (paymentIntent.status === 'requires_action') {
+//       console.log('Ytterligare åtgärd krävs för betalningen (t.ex. 3D Secure).');
+//       // Hantera omdirigeringar eller andra åtgärder som krävs
+//     } else {
+//       console.log(`Okänd PaymentIntent-status: ${paymentIntent.status}`);
+//       // Hantera okända statusar
+//     }
 
-    return paymentIntent.status; // Returnera statusen om du behöver den i anropande funktionen
-  } catch (error) {
-    console.error('Fel vid hämtning av PaymentIntent:', error);
-    // Hantera eventuella fel vid API-anropet
-    return null; // Eller kasta felet vidare beroende på din felhanteringsstrategi
-  }
-}
-
+//     return paymentIntent.status; // Returnera statusen om du behöver den i anropande funktionen
+//   } catch (error) {
+//     console.error('Fel vid hämtning av PaymentIntent:', error);
+//     // Hantera eventuella fel vid API-anropet
+//     return null; // Eller kasta felet vidare beroende på din felhanteringsstrategi
+//   }
+// }

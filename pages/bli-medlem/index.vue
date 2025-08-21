@@ -182,6 +182,7 @@ onMounted(async () => {
 
   const res = await fetch('/api/stripe/create-membership-item');
   const json = await res.json();
+  console.log('Fetched products:', json); // ← Lägg till denna
   products.value = json;
 
   try {

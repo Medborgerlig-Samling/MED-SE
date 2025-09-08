@@ -7,7 +7,15 @@ function vuetifyConfig(_options, nuxt) {
 }
 export default defineNuxtConfig({
   ssr: true,
-  modules: [vuetifyConfig, '@pinia/nuxt', '@nuxt/eslint', '@nuxtjs/strapi', '@nuxtjs/device', '@unlok-co/nuxt-stripe'],
+  modules: [
+    vuetifyConfig,
+    '@pinia/nuxt',
+    '@nuxt/eslint',
+    '@nuxtjs/strapi',
+    '@nuxtjs/device',
+    '@unlok-co/nuxt-stripe',
+    'nuxt-gtag',
+  ],
   // '@dargmuesli/nuxt-cookie-control',
   // cookieControl: {
   //   closeModalOnClickOutside: true,
@@ -17,6 +25,10 @@ export default defineNuxtConfig({
   //   },
   //   // typed module options
   // },
+  gtag: {
+    id: process.env.GTAG_ID,
+    enabled: process.env.NODE_ENV === 'production',
+  },
   content: {
     experimental: {
       search: true,
@@ -55,11 +67,10 @@ export default defineNuxtConfig({
     private: {
       stripeSecretKey: process.env.STRIPE_SECRET_KEY,
       stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-      
     },
     public: {
       xBearerToken: process.env.X_AUTH_TOKEN,
-      civicrmBaseUrl: process.env.CIVICRM_BASE_URL, 
+      civicrmBaseUrl: process.env.CIVICRM_BASE_URL,
       stripe: {
         key: process.env.STRIPE_PUBLISHABLE_KEY,
       },
